@@ -21,11 +21,11 @@ pub struct Point2D {
 /// #Examples
 /// ```
 /// use std::f64::consts::{SQRT_2, FRAC_PI_4};
-/// use program_core::drawable::{Line2D, Point2D};
+/// use program_core::{Line, Point};
 /// 
-/// let start = Point2D::new(0.0, 0.0);
-/// let end = Point2D::new(1.0, 1.0);
-/// let line = Line2D::new(&start, &end);
+/// let start = Point::new(0.0, 0.0);
+/// let end = Point::new(1.0, 1.0);
+/// let line = Line::new(&start, &end);
 ///
 /// assert_eq!(start, line.start());
 /// assert_eq!(end, line.end());

@@ -1,10 +1,5 @@
 mod drawable;
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
-    }
-}
+pub use drawable::Point2D as Point;
+pub use drawable::Line2D as Line;
+
