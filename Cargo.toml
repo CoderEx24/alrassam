@@ -1,0 +1,7 @@
+[workspace]
+
+members = [
+	"program_core",
+	"web",
+	"gui",
+]
