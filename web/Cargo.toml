@@ -7,4 +7,6 @@ edition = "2021"
 
 [dependencies]
 yew = "0.19"
+log = "0.4.14"
+wasm-logger = "0.2.0"
 program_core = { path = "../program_core" }
