@@ -7,5 +7,6 @@ pub enum Drawable {
 }
 
 pub use drawable::{
-    line2d::Line2D as Line, point2d::Point2D as Point
+    line2d::Line2D as Line, point2d::Point2D as Point,
+    circle::Circle as Circle,
 };
