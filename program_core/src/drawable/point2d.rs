@@ -1,6 +1,5 @@
-/// #Point
+/// # Point
 /// structure to hold points in 2d cartesian space
-/// can be constructed with tuples
 #[derive(PartialEq, Clone, Debug)]
 pub struct Point2D {
     pub x: f64,

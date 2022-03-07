@@ -1,11 +1,11 @@
 use super::point2d::Point2D;
 use super::Draw;
 
-/// #Line2D
+/// # Line2D
 /// structure to hold lines in 2d cartesian space
 /// it stores starting point, ending point, length, and angle in radians.
 ///
-/// #Examples
+/// # Examples
 /// ```
 /// use std::f64::consts::{SQRT_2, FRAC_PI_4};
 /// use program_core::{Line, Point};
