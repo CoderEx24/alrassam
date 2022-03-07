@@ -1,5 +1,11 @@
 mod drawable;
 
-pub use drawable::Point2D as Point;
-pub use drawable::Line2D as Line;
+#[derive(PartialEq, Clone, Debug)]
+pub enum Drawable {
+    Point(drawable::point2d::Point2D),
+    Line(drawable::line2d::Line2D),
+}
 
+pub use drawable::{
+    line2d::Line2D as Line, point2d::Point2D as Point
+};

@@ -1,18 +1,5 @@
-//! #drawable
-//! this module will contain code for drawable objects
-//! like lines, circles, rectangles, etc.
-//!
-
-pub trait Drawable {}
-
-/// #Point
-/// structure to hold points in 2d cartesian space
-/// can be constructed with tuples
-#[derive(PartialEq, Clone, Debug)]
-pub struct Point2D {
-    pub x: f64,
-    pub y: f64,
-}
+use super::point2d::Point2D;
+use super::Draw;
 
 /// #Line2D
 /// structure to hold lines in 2d cartesian space
@@ -33,25 +20,12 @@ pub struct Point2D {
 /// assert_eq!(FRAC_PI_4, line.angle());
 ///
 /// ```
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Clone, Debug)]
 pub struct Line2D {
     start: Point2D,
     end: Point2D,
     len: f64,
     angle: f64,
-}
-
-impl Point2D {
-    pub fn new(x: f64, y: f64) -> Point2D {
-        Point2D { x, y }
-    }
-
-    pub fn x(&self) -> f64 {
-        self.x
-    }
-    pub fn y(&self) -> f64 {
-        self.y
-    }
 }
 
 impl Line2D {
@@ -78,4 +52,4 @@ impl Line2D {
     }
 }
 
-impl Drawable for Line2D {}
+impl Draw for Line2D {}
