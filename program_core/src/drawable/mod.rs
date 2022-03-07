@@ -7,4 +7,6 @@ pub trait Draw {}
 
 pub mod line2d;
 pub mod point2d;
+pub mod circle;
+pub mod text;
 
