@@ -10,7 +10,7 @@ use std::collections::HashMap;
 /// construct an SVG tag for the drawable object
 pub trait Draw {
     fn get_svg_tag_name() -> String;
-    fn get_svg_tag_propeties(self: &Self) -> HashMap<String, String>;
+    fn get_svg_tag_properties(self: &Self) -> HashMap<String, String>;
 }
 
 pub mod line2d;

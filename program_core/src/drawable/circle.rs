@@ -1,6 +1,7 @@
 use super::point2d::Point2D;
 use super::Draw;
 use std::f64::consts::PI;
+use std::collections::HashMap;
 
 /// # Circle
 /// structure to hold circles in 2d carteian space
@@ -58,4 +59,19 @@ impl Circle {
 
 }
 
-impl Draw for Circle {}
+impl Draw for Circle {
+    fn get_svg_tag_name() -> String {
+        String::from("circle")
+    }
+
+    fn get_svg_tag_properties(&self) -> HashMap<String, String> {
+        let mut props = HashMap::new();
+
+        props.insert("cx".to_string(), self.center.x().to_string());
+        props.insert("cy".to_string(), self.center.y().to_string());
+        props.insert("r".to_string(), self.radius.to_string());
+
+        props
+    }
+
+}
