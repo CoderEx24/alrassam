@@ -1,5 +1,6 @@
 use super::point2d::Point2D;
 use super::Draw;
+use std::collections::HashMap;
 
 /// # Line2D
 /// structure to hold lines in 2d cartesian space
@@ -52,4 +53,19 @@ impl Line2D {
     }
 }
 
-impl Draw for Line2D {}
+impl Draw for Line2D {
+    fn get_svg_tag_name() -> String {
+        String::from("line")
+    }
+
+    fn get_svg_tag_properties(&self) -> HashMap<String, String> {
+        let mut props = HashMap::new();
+
+        props.insert("x1".to_string(), self.start.x().to_string());
+        props.insert("y1".to_string(), self.start.y().to_string());
+        props.insert("x2".to_string(), self.end.x().to_string());
+        props.insert("y2".to_string(), self.end.y().to_string());
+
+        props
+    }
+}
