@@ -1,5 +1,6 @@
 use super::point2d::Point2D;
 use super::Draw;
+use std::collections::HashMap;
 
 /// # Text
 /// a structure to represent text.
@@ -27,5 +28,18 @@ impl Text {
     }
 }
 
-impl Draw for Text {}
+impl Draw for Text {
+    fn get_svg_tag_name() -> String {
+        String::from("text")
+    }
+
+    fn get_svg_tag_properties(&self) -> HashMap<String, String> {
+        let mut props = HashMap::new();
+        
+        props.insert("x".to_string(), self.pos.x().to_string());
+        props.insert("y".to_string(), self.pos.y().to_string());
+
+        props
+    }
+}
 
