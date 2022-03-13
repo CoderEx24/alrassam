@@ -1,6 +1,6 @@
 use yew::prelude::*;
 use program_core::{Drawable, Line, Point};
-use super::app_state::AppState;
+use super::app_state::{AppState, Message};
 
 #[derive(PartialEq, Properties)]
 pub struct PanelProps {
@@ -14,7 +14,9 @@ pub fn panel(props: &PanelProps) -> Html {
     let add_line_onclick = {
         Callback::from(move |_| {
            let mut new_state = (*appstate).clone();
-           new_state.add(&Drawable::Line(Line::new(&Point::new(1.0, 2.0), &Point::new(300.0, 3.0))));
+           
+           new_state.set_message(Some(Message::Line));
+
            appstate.set(new_state);
         })
     };
