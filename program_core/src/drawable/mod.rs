@@ -3,6 +3,7 @@
 //! like lines, circles, rectangles, etc.
 
 use std::collections::HashMap;
+use std::string::ToString;
 
 /// # Draw
 /// A trait for drawable objects.
@@ -12,6 +13,49 @@ pub trait Draw {
     fn get_svg_tag_name() -> String;
     fn get_svg_tag_properties(self: &Self) -> HashMap<String, String>;
 }
+
+/// # Color
+/// A structure to hold color information.
+/// it consists of 4 fields:- (r, g, b, a)
+#[derive(PartialEq, Clone, Debug)]
+pub struct Color(u8, u8, u8, f32);
+
+impl ToString for Color {
+    fn to_string(&self) -> String {
+        let (r, g, b, a) = (self.0, self.1, self.2, self.3);
+        format!("rgba({}, {}, {}, {})", r, g, b, a)
+    }
+}
+
+/// # color_from_hex
+/// constructs a color from a number
+///
+/// # Examples
+/// ```
+/// use program_core::{Color, color_from_hex};
+///
+/// let red_number   = 0xff0000;
+/// let green_number = 0x00ff00;
+/// let blue_number  = 0x0000ff;
+///
+/// assert_eq!(Color(255, 0  , 0  , 0.0), color_from_hex(red_number, 0.0));
+/// assert_eq!(Color(0  , 255, 0  , 0.5), color_from_hex(green_number, 0.5));
+/// assert_eq!(Color(0  , 0  , 255, 0.7), color_from_hex(blue_number, 0.7));
+/// ```
+pub fn color_from_hex(hexnumber: u64, alpha: f32) -> Color {
+    Color(
+        (hexnumber & 0x0000ff) as u8,
+        (hexnumber & 0x00ff00) as u8,
+        (hexnumber & 0xff0000) as u8,
+        alpha
+    )
+}
+
+pub const RED:   Color = Color(255, 0, 0, 1.0);
+pub const GREEN: Color = Color(0, 255, 0, 1.0);
+pub const BLUE:  Color = Color(0, 0, 255, 1.0);
+pub const BLACK: Color = Color(255, 255, 255, 1.0);
+pub const WHITE: Color = Color(0, 0, 0, 1.0);
 
 pub mod line2d;
 pub mod point2d;
