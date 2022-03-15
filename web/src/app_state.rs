@@ -3,7 +3,6 @@ use program_core::{Drawable, Point};
 #[derive(Clone, PartialEq)]
 pub enum Message {
     Line,
-    StartLine(Point),
     FinishLine(Point),
 }
 
@@ -37,7 +36,7 @@ impl AppState {
     pub fn current_message(&self) -> Option<Message> {
         self.current_message.clone()
     }
-
+    
     pub fn prev_message(&self) -> Option<Message> {
         self.prev_message.clone()
     }
@@ -47,9 +46,6 @@ impl AppState {
         self.current_message = new_message;
     }
 
-    pub fn set_current_point(&mut self, point: &Point) {
-        self.current_point = Some(point.clone());
-    }
 }
 
 
