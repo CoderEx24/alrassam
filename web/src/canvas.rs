@@ -33,6 +33,17 @@ pub fn canvas(props: &CanvasProps) -> Html {
     });
 
     let appstate = props.appstate.clone();
+    
+    let svg_onmousemove = Callback::from(move |evt: MouseEvent| {
+        let click_point = Point::new(evt.x().into(), evt.y().into());
+        let mut new_state = (*appstate).clone();
+        
+        new_state.add(&Drawable::Point(click_point));        
+        
+        appstate.set(new_state);
+    });
+
+    let appstate = props.appstate.clone();
 
     html! {
         <>
@@ -48,7 +59,7 @@ pub fn canvas(props: &CanvasProps) -> Html {
                 }
             </p>
 
-            <svg width="1200" height="800" style="border: 5px solid red;" onclick={svg_onclick}>
+            <svg width="1200" height="800" style="border: 5px solid red;" onclick={svg_onclick} onmousemove={svg_onmousemove}>
                 {
                     (*appstate).drawables().iter().map(|drawable: &Drawable| match drawable {
                         Drawable::Line(line) => 
@@ -59,10 +70,20 @@ pub fn canvas(props: &CanvasProps) -> Html {
                                 y2={format!("{}px", line.end().y().to_string())}
                                 style="stroke:rgb(255, 0, 0)"
                             /> },
+                        Drawable::Point(point) => {
+                            html! { <circle 
+                                cx={point.x().to_string()}
+                                cy={point.y().to_string()}
+                                r=1
+                                />
+
+                            }
+                        },
                         _ => html! { "" }
 
                     }).collect::<Html>()
                 }
+              
             </svg>
 
         </>

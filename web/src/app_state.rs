@@ -12,6 +12,7 @@ pub struct AppState {
     drawables: Box<Vec<Drawable>>,
     current_message: Option<Message>,
     prev_message: Option<Message>,
+    current_point: Option<Point>,
 }
 
 impl AppState {
@@ -20,6 +21,7 @@ impl AppState {
             drawables: Box::new(Vec::new()),
             current_message: None,
             prev_message: None,
+            current_point: None,
         }
     }
 
@@ -43,6 +45,10 @@ impl AppState {
     pub fn set_message(&mut self, new_message: Option<Message>) {
         self.prev_message = self.current_message.clone();
         self.current_message = new_message;
+    }
+
+    pub fn set_current_point(&mut self, point: &Point) {
+        self.current_point = Some(point.clone());
     }
 }
 
