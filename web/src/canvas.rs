@@ -14,7 +14,7 @@ pub fn canvas(props: &CanvasProps) -> Html {
     
     let svg_onclick = Callback::from(move |evt: MouseEvent| {
         let mut new_state = (*appstate).clone();
-        let click_point = Point::new(evt.x().into(), evt.y().into());
+        let click_point = Point::new(evt.offset_x().into(), evt.offset_y().into());
         
         if let Some(message) = new_state.current_message() {
             match message {
@@ -35,11 +35,12 @@ pub fn canvas(props: &CanvasProps) -> Html {
     let appstate = props.appstate.clone();
     
     let svg_onmousemove = Callback::from(move |evt: MouseEvent| {
-        let click_point = Point::new(evt.x().into(), evt.y().into());
+        let pointer_pos = Point::new(evt.offset_x().into(), evt.offset_y().into()); 
         let mut new_state = (*appstate).clone();
         
-        new_state.add(&Drawable::Point(click_point));        
-        
+        new_state.add(&Drawable::Point(pointer_pos.clone()));        
+        new_state.set_current_point(&pointer_pos);
+
         appstate.set(new_state);
     });
 
@@ -56,6 +57,12 @@ pub fn canvas(props: &CanvasProps) -> Html {
                         },
                         _ => html! {}
                     }).collect::<Html>()
+                }
+            </p>
+            <br />
+            <p>
+                {
+                    format!("pointer_pos = {:?}", (*appstate).current_point())
                 }
             </p>
 
