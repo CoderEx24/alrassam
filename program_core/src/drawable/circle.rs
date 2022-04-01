@@ -84,3 +84,30 @@ impl Draw for Circle {
     }
 
 }
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+
+    #[test]
+    fn test_translate() {
+        let mut circle = Circle::new(&Point2D::new(0.0, 0.0), 5.0);
+
+        circle.translate(Point2D::new(1.0, 1.0));
+
+        assert_eq!(Point2D::new(1.0, 1.0), circle.center());
+        assert_eq!(5.0, circle.radius());
+    }
+
+    #[test]
+    fn test_scale() {
+        let mut circle = Circle::new(&Point2D::new(0.0, 0.0), 5.0);
+
+        circle.scale(2.0);
+
+        assert_eq!(Point2D::new(0.0, 0.0), circle.center());
+        assert_eq!(10.0, circle.radius());
+    }
+}
+
