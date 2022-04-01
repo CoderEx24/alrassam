@@ -10,6 +10,11 @@ use std::string::ToString;
 /// this trait will contain methods that helps
 /// construct an SVG tag for the drawable object
 pub trait Draw {
+    // allow method chaining
+    fn translate(self: &mut Self, offset: point2d::Point2D) -> &mut Self;
+    fn rotate(self: &mut Self, angle: f64) -> &mut Self;
+    fn scale(self: &mut Self, c: f64) -> &mut Self;
+
     fn get_svg_tag_name(self: &Self) -> String;
     fn get_svg_tag_properties(self: &Self) -> HashMap<String, String>;
     fn get_svg_inner_content(self: &Self) -> Option<String>;
