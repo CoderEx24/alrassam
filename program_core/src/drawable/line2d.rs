@@ -95,3 +95,44 @@ impl Draw for Line2D {
         props
     }
 }
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+    use std::f64::consts::{FRAC_PI_4, FRAC_PI_2};
+
+    #[test]
+    fn test_translate() {
+        let mut line = Line2D::new(&Point2D::new(0.0, 0.0), &Point2D::new(1.0, 1.0), None, None, None);
+        
+        line.translate(Point2D::new(5.0, 5.0));
+
+        assert_eq!(Point2D::new(5.0, 5.0), line.start());
+        assert_eq!(Point2D::new(6.0, 6.0), line.end());
+    }
+
+    #[test]
+    fn test_rotate() {
+        let mut line = Line2D::new(&Point2D::new(0.0, 0.0), &Point2D::new(1.0, 1.0), None, None, None);
+
+        line.rotate(FRAC_PI_4);
+
+        assert_eq!(FRAC_PI_2, line.angle());
+        assert_eq!(Point2D::new(0.0, 0.0), line.start());
+        assert_eq!(Point2D::new(0.0, 1.0), line.end());
+    }
+
+    #[test]
+    fn test_scale() {
+        let mut line = Line2D::new(&Point2D::new(0.0, 0.0), &Point2D::new(1.0, 1.0), None, None, None);
+
+        line.scale(2.0);
+
+        assert_eq!(8f64.sqrt(), line.len());
+        assert_eq!(Point2D::new(0.0, 0.0), line.start());
+        assert_eq!(Point2D::new(2.0, 2.0), line.end());
+    }
+
+}
+
