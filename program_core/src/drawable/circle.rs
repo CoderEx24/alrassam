@@ -60,15 +60,35 @@ impl Circle {
 }
 
 impl Draw for Circle {
+    /// ## Circle::translate
+    /// shifts the center of the circle
     fn translate(&mut self, offset: Point2D) -> &mut Self {
         self.center += offset;
         self
     }
+    
+    /// ## Circle::rotate
+    /// does nothing
+    // rotating a circle is meaningless
+    fn rotate(&mut self, _: f64) -> &mut Self { self }
 
+    /// ## Circle::scale
+    /// scales the radius of the circle
+    fn scale(&mut self, c: f64) -> &mut Self {
+        // scaling by zero shouldn't happen, but just in case
+        self.radius *= if c == 0.0 { 1.0 } else { c };
+        self 
+    }
+
+    /// ## Circle::get_svg_tag_name
+    /// always returns `"circle"`
     fn get_svg_tag_name(&self) -> String {
         String::from("circle")
     }
 
+    /// ## Circle::get_svg_tag_properties
+    /// returns a `HashMap<String, String>`, with properties names as keys (like cx)
+    /// and properties values as values
     fn get_svg_tag_properties(&self) -> HashMap<String, String> {
         let mut props = HashMap::new();
 
@@ -79,6 +99,8 @@ impl Draw for Circle {
         props
     }
 
+    /// ## Circle::get_svg_inner_content
+    /// always returns `None`
     fn get_svg_inner_content(&self) -> Option<String> {
         None
     }
