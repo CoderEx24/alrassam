@@ -60,7 +60,12 @@ impl Circle {
 }
 
 impl Draw for Circle {
-    fn get_svg_tag_name() -> String {
+    fn translate(&mut self, offset: Point2D) -> &mut Self {
+        self.center += offset;
+        self
+    }
+
+    fn get_svg_tag_name(&self) -> String {
         String::from("circle")
     }
 
@@ -72,6 +77,10 @@ impl Draw for Circle {
         props.insert("r".to_string(), self.radius.to_string());
 
         props
+    }
+
+    fn get_svg_inner_content(&self) -> Option<String> {
+        None
     }
 
 }
