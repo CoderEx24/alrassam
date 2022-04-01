@@ -10,8 +10,24 @@ use std::string::ToString;
 /// this trait will contain methods that helps
 /// construct an SVG tag for the drawable object
 pub trait Draw {
-    fn get_svg_tag_name() -> String;
+    fn get_svg_tag_name(self: &Self) -> String;
     fn get_svg_tag_properties(self: &Self) -> HashMap<String, String>;
+    fn get_svg_inner_content(self: &Self) -> Option<String>;
+    fn to_svg_tag(self: &Self) -> String {
+        let mut svg_tag = format!("<{}", self.get_svg_tag_name());
+
+        // TODO: Use iterators instead
+        for (key, val) in self.get_svg_tag_properties().iter() {
+            svg_tag += format!(" {}={}", key, val).as_str();
+        }
+
+        svg_tag += match self.get_svg_inner_content() {
+            Some(txt) => format!("> {} <{}/>", txt, self.get_svg_tag_name()).as_str(),
+            None      => "/>"
+        };
+
+        svg_tag
+    }
 }
 
 /// # Color
