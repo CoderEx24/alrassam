@@ -82,4 +82,5 @@ pub mod line2d;
 pub mod point2d;
 pub mod circle;
 pub mod text;
+pub mod rect2d;
 
