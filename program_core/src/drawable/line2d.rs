@@ -8,7 +8,7 @@ use std::collections::HashMap;
 /// # Examples
 /// ```
 /// use std::f64::consts::{SQRT_2, FRAC_PI_4};
-/// use program_core::{Line, Point};
+/// use program_core::{Line, Point, BLUE, WHITE};
 /// 
 /// let start = Point::new(0.0, 0.0);
 /// let end = Point::new(1.0, 1.0);

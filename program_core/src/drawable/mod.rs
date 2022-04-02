@@ -40,7 +40,7 @@ pub trait Draw {
 /// A structure to hold color information.
 /// it consists of 4 fields:- (r, g, b, a)
 #[derive(PartialEq, Clone, Debug)]
-pub struct Color(u8, u8, u8, f32);
+pub struct Color(pub u8, pub u8, pub u8, pub f32);
 
 impl ToString for Color {
     fn to_string(&self) -> String {
@@ -59,16 +59,16 @@ impl ToString for Color {
 /// let red_number   = 0xff0000;
 /// let green_number = 0x00ff00;
 /// let blue_number  = 0x0000ff;
-///
+/// 
 /// assert_eq!(Color(255, 0  , 0  , 0.0), color_from_hex(red_number, 0.0));
 /// assert_eq!(Color(0  , 255, 0  , 0.5), color_from_hex(green_number, 0.5));
 /// assert_eq!(Color(0  , 0  , 255, 0.7), color_from_hex(blue_number, 0.7));
 /// ```
 pub fn color_from_hex(hexnumber: u64, alpha: f32) -> Color {
     Color(
+        ((hexnumber & 0xff0000) >> 16) as u8,
+        ((hexnumber & 0x00ff00) >> 8) as u8,
         (hexnumber & 0x0000ff) as u8,
-        (hexnumber & 0x00ff00) as u8,
-        (hexnumber & 0xff0000) as u8,
         alpha
     )
 }
