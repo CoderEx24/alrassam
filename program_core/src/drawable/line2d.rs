@@ -77,10 +77,41 @@ impl Line2D {
 }
 
 impl Draw for Line2D {
-    fn get_svg_tag_name() -> String {
+
+    /// ## Line2D::translate
+    /// shifts the starting and ending points
+    fn translate(&mut self, offset: Point2D) -> &mut Self {
+        self.start += offset;
+        self.end += offset;
+        self
+    }
+
+    /// ## Line2D::rotate
+    /// rotates the line about its starting point
+    fn rotate(&mut self, angle: f64) -> &mut Self {
+        self.end = self.start + Point2D { x: self.len() * angle.cos(), y: self.len() * angle.sin() };
+        self
+    }
+
+    /// ## Line2D::scale
+    /// scales the length of the line by moving the end point, c != 0
+    fn scale(&mut self, c: f64) -> &mut Self {
+        // make sure we actually have a valid value
+        let c = if c == 0.0 { 1.0 } else { c };
+        
+        self.end = self.start + Point2D { x: c * self.end.x, y: c * self.end.y };
+
+        self
+    }
+    
+    /// ## Line2D::get_svg_tag_name
+    /// always returns `"line"`
+    fn get_svg_tag_name(&self) -> String {
         String::from("line")
     }
 
+    /// ## Line2D::get_svg_tag_properties
+    /// returns a `HashMap<String, String>` of the properties of the line tag
     fn get_svg_tag_properties(&self) -> HashMap<String, String> {
         let mut props = HashMap::new();
 
@@ -93,6 +124,12 @@ impl Draw for Line2D {
                              self.stroke_color.to_string(), self.stroke_width));
 
         props
+    }
+
+    /// ## Line2D::get_svg_inner_content
+    /// always returns `None`
+    fn get_svg_inner_content(&self) -> Option<String> {
+        None
     }
 }
 
