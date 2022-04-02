@@ -1,5 +1,5 @@
 use super::point2d::Point2D;
-use super::{ Draw, Color, BLACK };
+use super::{Color, Draw, BLACK};
 use std::collections::HashMap;
 
 /// # Text
@@ -11,13 +11,14 @@ pub struct Text {
     text: String,
     pos: Point2D,
     angle: f64,
-    fill: Color
+    fill: Color,
 }
 
 impl Text {
     pub fn new(text: String, pos: Point2D, angle: Option<f64>, fill: Option<Color>) -> Text {
         Text {
-            text, pos,
+            text,
+            pos,
             angle: angle.unwrap_or(0.0),
             fill: fill.unwrap_or(BLACK),
         }
@@ -41,7 +42,6 @@ impl Text {
 }
 
 impl Draw for Text {
-
     /// ## Text::translate
     /// shifts the text
     fn translate(&mut self, offset: Point2D) -> &mut Self {
@@ -63,18 +63,18 @@ impl Draw for Text {
 
         self
     }
-    
+
     /// ## Text::get_svg_tag_name
     /// always returns `"text"`
     fn get_svg_tag_name(&self) -> String {
         String::from("text")
     }
-    
+
     /// ## Text::get_svg_tag_properties
     /// returns a `HashMap<String, String>` of the text properties
     fn get_svg_tag_properties(&self) -> HashMap<String, String> {
         let mut props = HashMap::new();
-        
+
         // TODO: add transform property
         props.insert("x".to_string(), self.pos.x().to_string());
         props.insert("y".to_string(), self.pos.y().to_string());
@@ -91,7 +91,7 @@ impl Draw for Text {
 
 #[cfg(test)]
 mod tests {
-    
+
     use super::*;
 
     #[test]
@@ -103,4 +103,3 @@ mod tests {
         assert_eq!(Point2D::new(1.0, 1.0), text.pos());
     }
 }
-

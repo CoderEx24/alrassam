@@ -1,7 +1,7 @@
 use super::point2d::Point2D;
 use super::Draw;
-use std::f64::consts::PI;
 use std::collections::HashMap;
+use std::f64::consts::PI;
 
 /// # Circle
 /// structure to hold circles in 2d carteian space
@@ -28,7 +28,6 @@ pub struct Circle {
     radius: f64,
     circumference: f64,
     area: f64,
-
 }
 
 impl Circle {
@@ -37,26 +36,25 @@ impl Circle {
             center: center.clone(),
             radius,
             circumference: 2f64 * PI * radius,
-            area: PI * radius.powi(2)
+            area: PI * radius.powi(2),
         }
     }
-    
+
     pub fn center(&self) -> Point2D {
         self.center.clone()
     }
 
     pub fn radius(&self) -> f64 {
-        self.radius 
+        self.radius
     }
 
     pub fn circumference(&self) -> f64 {
-        self.circumference 
+        self.circumference
     }
 
     pub fn area(&self) -> f64 {
         self.area
     }
-
 }
 
 impl Draw for Circle {
@@ -66,18 +64,20 @@ impl Draw for Circle {
         self.center += offset;
         self
     }
-    
+
     /// ## Circle::rotate
     /// does nothing
     // rotating a circle is meaningless
-    fn rotate(&mut self, _: f64) -> &mut Self { self }
+    fn rotate(&mut self, _: f64) -> &mut Self {
+        self
+    }
 
     /// ## Circle::scale
     /// scales the radius of the circle
     fn scale(&mut self, c: f64) -> &mut Self {
         // scaling by zero shouldn't happen, but just in case
         self.radius *= if c == 0.0 { 1.0 } else { c };
-        self 
+        self
     }
 
     /// ## Circle::get_svg_tag_name
@@ -104,12 +104,11 @@ impl Draw for Circle {
     fn get_svg_inner_content(&self) -> Option<String> {
         None
     }
-
 }
 
 #[cfg(test)]
 mod tests {
-    
+
     use super::*;
 
     #[test]
@@ -132,4 +131,3 @@ mod tests {
         assert_eq!(10.0, circle.radius());
     }
 }
-

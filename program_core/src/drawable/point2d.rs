@@ -1,6 +1,4 @@
-use core::ops::{
-    Add, AddAssign, Sub, SubAssign
-};
+use core::ops::{Add, AddAssign, Sub, SubAssign};
 
 /// # Point
 /// structure to hold points in 2d cartesian space
@@ -29,7 +27,7 @@ impl Add for Point2D {
     fn add(self, rhs: Self) -> Self {
         Point2D {
             x: self.x + rhs.x,
-            y: self.y + rhs.y
+            y: self.y + rhs.y,
         }
     }
 }
@@ -38,17 +36,14 @@ impl AddAssign for Point2D {
     fn add_assign(&mut self, rhs: Self) {
         *self = Point2D {
             x: self.x + rhs.x,
-            y: self.x + rhs.y
+            y: self.x + rhs.y,
         };
     }
 }
 
 impl PartialEq for Point2D {
-
     fn eq(&self, other: &Self) -> bool {
         use core::f64::EPSILON;
         (self.x - other.x <= EPSILON) && (self.y - other.y <= EPSILON)
     }
-
 }
-

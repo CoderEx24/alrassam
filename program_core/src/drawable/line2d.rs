@@ -1,4 +1,4 @@
-use super::{Draw, Color, BLUE, WHITE, point2d::Point2D};
+use super::{point2d::Point2D, Color, Draw, BLUE, WHITE};
 use std::collections::HashMap;
 
 /// # Line2D
@@ -9,7 +9,7 @@ use std::collections::HashMap;
 /// ```
 /// use std::f64::consts::{SQRT_2, FRAC_PI_4};
 /// use program_core::{Line, Point, BLUE, WHITE};
-/// 
+///
 /// let start = Point::new(0.0, 0.0);
 /// let end = Point::new(1.0, 1.0);
 /// let line = Line::new(&start, &end, None, None, None);
@@ -35,7 +35,13 @@ pub struct Line2D {
 }
 
 impl Line2D {
-    pub fn new(start: &Point2D, end: &Point2D, stroke_color: Option<Color>, stroke_width: Option<u8>, fill: Option<Color>) -> Line2D {
+    pub fn new(
+        start: &Point2D,
+        end: &Point2D,
+        stroke_color: Option<Color>,
+        stroke_width: Option<u8>,
+        fill: Option<Color>,
+    ) -> Line2D {
         Line2D {
             start: start.clone(),
             end: end.clone(),
@@ -77,7 +83,6 @@ impl Line2D {
 }
 
 impl Draw for Line2D {
-
     /// ## Line2D::translate
     /// shifts the starting and ending points
     fn translate(&mut self, offset: Point2D) -> &mut Self {
@@ -90,7 +95,11 @@ impl Draw for Line2D {
     /// rotates the line about its starting point
     fn rotate(&mut self, angle: f64) -> &mut Self {
         self.angle += angle;
-        self.end = self.start + Point2D { x: self.len() * self.angle.cos(), y: self.len() * self.angle.sin() };
+        self.end = self.start
+            + Point2D {
+                x: self.len() * self.angle.cos(),
+                y: self.len() * self.angle.sin(),
+            };
         self
     }
 
@@ -99,13 +108,18 @@ impl Draw for Line2D {
     fn scale(&mut self, c: f64) -> &mut Self {
         // make sure we actually have a valid value
         let c = if c == 0.0 { 1.0 } else { c };
-        
-        self.end = self.start + Point2D { x: c * self.end.x, y: c * self.end.y };
-        self.len = ((self.start.x - self.end.x).powi(2) + (self.start.y - self.end.y).powi(2)).sqrt();
+
+        self.end = self.start
+            + Point2D {
+                x: c * self.end.x,
+                y: c * self.end.y,
+            };
+        self.len =
+            ((self.start.x - self.end.x).powi(2) + (self.start.y - self.end.y).powi(2)).sqrt();
 
         self
     }
-    
+
     /// ## Line2D::get_svg_tag_name
     /// always returns `"line"`
     fn get_svg_tag_name(&self) -> String {
@@ -121,9 +135,15 @@ impl Draw for Line2D {
         props.insert("y1".to_string(), self.start.y().to_string());
         props.insert("x2".to_string(), self.end.x().to_string());
         props.insert("y2".to_string(), self.end.y().to_string());
-        props.insert("style".to_string(), 
-                     format!("fill:{};stroke:{};stroke-width:{}", self.fill.to_string(), 
-                             self.stroke_color.to_string(), self.stroke_width));
+        props.insert(
+            "style".to_string(),
+            format!(
+                "fill:{};stroke:{};stroke-width:{}",
+                self.fill.to_string(),
+                self.stroke_color.to_string(),
+                self.stroke_width
+            ),
+        );
 
         props
     }
@@ -137,14 +157,20 @@ impl Draw for Line2D {
 
 #[cfg(test)]
 mod tests {
-    
+
     use super::*;
-    use std::f64::consts::{FRAC_PI_4, FRAC_PI_2};
+    use std::f64::consts::{FRAC_PI_2, FRAC_PI_4};
 
     #[test]
     fn test_translate() {
-        let mut line = Line2D::new(&Point2D::new(0.0, 0.0), &Point2D::new(1.0, 1.0), None, None, None);
-        
+        let mut line = Line2D::new(
+            &Point2D::new(0.0, 0.0),
+            &Point2D::new(1.0, 1.0),
+            None,
+            None,
+            None,
+        );
+
         line.translate(Point2D::new(5.0, 5.0));
 
         assert_eq!(Point2D::new(5.0, 5.0), line.start());
@@ -153,7 +179,13 @@ mod tests {
 
     #[test]
     fn test_rotate() {
-        let mut line = Line2D::new(&Point2D::new(0.0, 0.0), &Point2D::new(1.0, 1.0), None, None, None);
+        let mut line = Line2D::new(
+            &Point2D::new(0.0, 0.0),
+            &Point2D::new(1.0, 1.0),
+            None,
+            None,
+            None,
+        );
 
         line.rotate(FRAC_PI_4);
 
@@ -164,7 +196,13 @@ mod tests {
 
     #[test]
     fn test_scale() {
-        let mut line = Line2D::new(&Point2D::new(0.0, 0.0), &Point2D::new(1.0, 1.0), None, None, None);
+        let mut line = Line2D::new(
+            &Point2D::new(0.0, 0.0),
+            &Point2D::new(1.0, 1.0),
+            None,
+            None,
+            None,
+        );
 
         line.scale(3.0);
 
@@ -172,6 +210,4 @@ mod tests {
         assert_eq!(Point2D::new(0.0, 0.0), line.start());
         assert_eq!(Point2D::new(3.0, 3.0), line.end());
     }
-
 }
-
