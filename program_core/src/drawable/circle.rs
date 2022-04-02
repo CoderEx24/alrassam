@@ -79,6 +79,12 @@ impl Draw for Circle {
         self.radius *= if c == 0.0 { 1.0 } else { c };
         self
     }
+    
+    /// ## Circle::contains
+    /// checks whether the provided point is in the circle or not
+    fn contains(&self, point: Point2D) -> bool {
+        (self.center.x - point.x).powi(2) + (self.center.y - point.y).powi(2) <= self.radius.powi(2)
+    }
 
     /// ## Circle::get_svg_tag_name
     /// always returns `"circle"`
@@ -129,5 +135,19 @@ mod tests {
 
         assert_eq!(Point2D::new(0.0, 0.0), circle.center());
         assert_eq!(10.0, circle.radius());
+    }
+
+    #[test]
+    fn test_contains() {
+        let circle = Circle::new(&Point2D::new(0.0, 0.0), 1.0);
+
+        let point_in = Point2D::new(0.1, 0.1);
+        let point_on = Point2D::new(0.0, 1.0);
+        let point_out = Point2D::new(1.0, 1.0);
+
+        assert!(circle.contains(point_in));
+        assert!(circle.contains(point_on));
+        assert!(!circle.contains(point_out));
+
     }
 }
