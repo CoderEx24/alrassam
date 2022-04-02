@@ -89,7 +89,8 @@ impl Draw for Line2D {
     /// ## Line2D::rotate
     /// rotates the line about its starting point
     fn rotate(&mut self, angle: f64) -> &mut Self {
-        self.end = self.start + Point2D { x: self.len() * angle.cos(), y: self.len() * angle.sin() };
+        self.angle += angle;
+        self.end = self.start + Point2D { x: self.len() * self.angle.cos(), y: self.len() * self.angle.sin() };
         self
     }
 
@@ -100,6 +101,7 @@ impl Draw for Line2D {
         let c = if c == 0.0 { 1.0 } else { c };
         
         self.end = self.start + Point2D { x: c * self.end.x, y: c * self.end.y };
+        self.len = ((self.start.x - self.end.x).powi(2) + (self.start.y - self.end.y).powi(2)).sqrt();
 
         self
     }
@@ -157,18 +159,18 @@ mod tests {
 
         assert_eq!(FRAC_PI_2, line.angle());
         assert_eq!(Point2D::new(0.0, 0.0), line.start());
-        assert_eq!(Point2D::new(0.0, 1.0), line.end());
+        assert_eq!(Point2D::new(0.0, 2f64.sqrt()), line.end());
     }
 
     #[test]
     fn test_scale() {
         let mut line = Line2D::new(&Point2D::new(0.0, 0.0), &Point2D::new(1.0, 1.0), None, None, None);
 
-        line.scale(2.0);
+        line.scale(3.0);
 
-        assert_eq!(8f64.sqrt(), line.len());
+        assert_eq!(18f64.sqrt(), line.len());
         assert_eq!(Point2D::new(0.0, 0.0), line.start());
-        assert_eq!(Point2D::new(2.0, 2.0), line.end());
+        assert_eq!(Point2D::new(3.0, 3.0), line.end());
     }
 
 }
