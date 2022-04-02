@@ -25,11 +25,12 @@ pub trait Draw {
         for (key, val) in self.get_svg_tag_properties().iter() {
             svg_tag += format!(" {}={}", key, val).as_str();
         }
-
-        svg_tag += match self.get_svg_inner_content() {
-            Some(txt) => format!("> {} <{}/>", txt, self.get_svg_tag_name()).as_str(),
-            None      => "/>"
-        };
+        
+        // TODO: there must be a better way to do this >:(
+        match self.get_svg_inner_content() {
+            Some(txt) => { svg_tag += format!("> {} <{}/>", txt, self.get_svg_tag_name()).as_str(); }
+            None      => { svg_tag += "/>"; }
+        }
 
         svg_tag
     }
@@ -82,5 +83,5 @@ pub mod line2d;
 pub mod point2d;
 pub mod circle;
 pub mod text;
-pub mod rect2d;
+//pub mod rect2d;
 
