@@ -11,11 +11,11 @@ use std::string::ToString;
 /// construct an SVG tag for the drawable object
 pub trait Draw {
     // allow method chaining
-    fn translate(self: &mut Self, offset: point2d::Point2D) -> &mut Self;
+    fn translate(self: &mut Self, offset: vector::Vector2) -> &mut Self;
     fn rotate(self: &mut Self, angle: f64) -> &mut Self;
     fn scale(self: &mut Self, c: f64) -> &mut Self;
 
-    fn contains(self: &Self, point: point2d::Point2D) -> bool;
+    fn contains(self: &Self, point: vector::Vector2) -> bool;
 
     fn get_svg_tag_name(self: &Self) -> String;
     fn get_svg_tag_properties(self: &Self) -> HashMap<String, String>;
@@ -87,6 +87,6 @@ pub const WHITE: Color = Color(0, 0, 0, 1.0);
 
 pub mod circle;
 pub mod line2d;
-pub mod point2d;
+pub mod vector;
 pub mod text;
 //pub mod rect2d;
