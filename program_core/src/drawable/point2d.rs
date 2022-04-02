@@ -4,7 +4,7 @@ use core::ops::{
 
 /// # Point
 /// structure to hold points in 2d cartesian space
-#[derive(PartialEq, Clone, Debug, Copy)]
+#[derive(Clone, Debug, Copy)]
 pub struct Point2D {
     pub x: f64,
     pub y: f64,
@@ -41,5 +41,14 @@ impl AddAssign for Point2D {
             y: self.x + rhs.y
         };
     }
+}
+
+impl PartialEq for Point2D {
+
+    fn eq(&self, other: &Self) -> bool {
+        use core::f64::EPSILON;
+        (self.x - other.x <= EPSILON) && (self.y - other.y <= EPSILON)
+    }
+
 }
 
