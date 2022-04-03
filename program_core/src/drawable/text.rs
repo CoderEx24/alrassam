@@ -57,12 +57,17 @@ impl Draw for Text {
     }
 
     /// ## Text::scale
-    /// scales the text (currently has no effect)
-    fn scale(&mut self, c: f64) -> &mut Self {
-        // TODO: Implement text scaling
-        let c = if c == 0.0 { 1.0 } else { c };
-
+    /// unimplemented 
+    // TODO: scaling text
+    fn scale(&mut self, _: f64) -> &mut Self {
         self
+    }
+        
+    /// ## Text::contains
+    /// unimplemented
+    // TODO: check for inclusion
+    fn contains(&self, _: Vector2) -> bool {
+        false
     }
 
     /// ## Text::get_svg_tag_name
