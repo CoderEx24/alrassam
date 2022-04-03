@@ -4,6 +4,8 @@ use core::f64::EPSILON;
 /// # Vector2
 /// structure to hold vectors in 2d cartesian space
 /// this structure can perform all operations done on vectors
+/// 
+/// Vector2 instances can be added by + and +=, subtracted by - and -=.
 ///
 /// # Examples
 /// ```
@@ -47,15 +49,21 @@ impl Vector2 {
     pub fn arg(&self) -> f64 {
         self.arg
     }
-
+    
+    /// ## Vector2::dot
+    /// calculates the dot product between 2 vectors
     pub fn dot(&self, rhs: Vector2) -> f64 {
         self.x * rhs.x + self.y * rhs.y
     }
 
+    /// ## Vector2::cross
+    /// calculates the cross product between 2 vectors
     pub fn cross(&self, rhs: Vector2) -> f64 {
         self.x * rhs.y - self.y * rhs.x
     }
-
+    
+    /// ## Vector2::translate
+    /// shifts the vector by the given offset
     pub fn translate(&mut self, offset: Vector2) -> Self {
         self.x += offset.x;
         self.y += offset.y;
@@ -66,6 +74,8 @@ impl Vector2 {
         *self
     }
 
+    /// ## Vector2::rotate
+    /// rotates the vector by the given angle about the origin
     pub fn rotate(&mut self, angle: f64) -> Self {
         self.arg += angle;
         self.x = self.len * self.arg.cos();
@@ -74,6 +84,8 @@ impl Vector2 {
         *self
     }
 
+    /// ## Vector2::scale
+    /// scales the length of the vector
     pub fn scale(&mut self, c: f64) -> Self {
         // scaling by zero will have no effect
         let c = if c == 0.0 { 1.0 } else { c };
@@ -84,12 +96,18 @@ impl Vector2 {
 
         *self
     }
-
-    pub fn equals_vector(&self, rhs: Vector2) -> bool {
+    
+    /// ## Vector2::equals_vector
+    /// checks equality between another vector using differences
+    /// use the == operator to use this
+    fn equals_vector(&self, rhs: Vector2) -> bool {
         (self.x - rhs.x <= EPSILON) && (self.y - rhs.y <= EPSILON)
     }
 
-    pub fn equals_tuple(&self, rhs: (f64, f64)) -> bool {
+    /// ##Vector2::equals_tuple
+    /// checks equality between a vector and a tuple using differences
+    /// use the == operator to use this.
+    fn equals_tuple(&self, rhs: (f64, f64)) -> bool {
         self.equals_vector(Vector2::new(rhs.0, rhs.1))
     }
 }
