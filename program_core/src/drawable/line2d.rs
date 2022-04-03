@@ -109,6 +109,17 @@ impl Draw for Line2D {
         self
     }
 
+    /// ## Line2D::contains
+    /// checks whether the given point is on the line or not
+    fn contains(&self, other: Vector2) -> bool {
+        use core::f64::EPSILON;
+
+        let diff1 = other - self.start;
+        let diff2 = self.end - other;
+
+        diff1.dot(diff2) <= EPSILON
+    }
+
     /// ## Line2D::get_svg_tag_name
     /// always returns `"line"`
     fn get_svg_tag_name(&self) -> String {
@@ -199,5 +210,22 @@ mod tests {
         assert!(18f64.sqrt() - line.len() <= EPSILON);
         assert_eq!(Vector2::new(0.0, 0.0), line.start());
         assert_eq!(Vector2::new(3.0, 3.0), line.end());
+    }
+
+    #[test]
+    fn test_contains() {
+        let line = Line2D::new(
+            Vector2::new(0.0, 0.0),
+            Vector2::new(2.0, 2.0),
+            None,
+            None,
+            None,
+        );
+
+        let v_inside = Vector2::new(1.0, 1.0);
+        let v_outside = Vector2::new(5.0, 5.0);
+
+        assert!(line.contains(v_inside));
+        assert!(!line.contains(v_outside));
     }
 }
