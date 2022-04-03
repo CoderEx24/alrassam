@@ -1,4 +1,4 @@
-use super::{point2d::Point2D, Color, Draw, BLUE, WHITE};
+use super::{vector::Vector2, Color, Draw, BLUE, WHITE};
 use std::collections::HashMap;
 
 /// # Line2D
@@ -8,11 +8,11 @@ use std::collections::HashMap;
 /// # Examples
 /// ```
 /// use std::f64::consts::{SQRT_2, FRAC_PI_4};
-/// use program_core::{Line, Point, BLUE, WHITE};
+/// use program_core::{Line, Vector2, BLUE, WHITE};
 ///
-/// let start = Point::new(0.0, 0.0);
-/// let end = Point::new(1.0, 1.0);
-/// let line = Line::new(&start, &end, None, None, None);
+/// let start = Vector2::new(0.0, 0.0);
+/// let end = Vector2::new(1.0, 1.0);
+/// let line = Line::new(start, end, None, None, None);
 ///
 /// assert_eq!(start, line.start());
 /// assert_eq!(end, line.end());
@@ -25,8 +25,8 @@ use std::collections::HashMap;
 /// ```
 #[derive(PartialEq, Clone, Debug)]
 pub struct Line2D {
-    start: Point2D,
-    end: Point2D,
+    start: Vector2,
+    end: Vector2,
     stroke_color: Color,
     stroke_width: u8,
     fill: Color,
@@ -36,29 +36,29 @@ pub struct Line2D {
 
 impl Line2D {
     pub fn new(
-        start: &Point2D,
-        end: &Point2D,
+        start: Vector2,
+        end: Vector2,
         stroke_color: Option<Color>,
         stroke_width: Option<u8>,
         fill: Option<Color>,
     ) -> Line2D {
         Line2D {
-            start: start.clone(),
-            end: end.clone(),
+            start,
+            end,
             stroke_color: stroke_color.unwrap_or(BLUE),
             stroke_width: stroke_width.unwrap_or(5),
             fill: fill.unwrap_or(WHITE),
-            len: ((start.x - end.x).powi(2) + (start.y - end.y).powi(2)).sqrt(),
-            angle: ((start.y - end.y) / (start.x - end.x)).atan(),
+            len: (end - start).len(),
+            angle: (end - start).arg(),
         }
     }
 
-    pub fn start(&self) -> Point2D {
-        self.start.clone()
+    pub fn start(&self) -> Vector2 {
+        self.start
     }
 
-    pub fn end(&self) -> Point2D {
-        self.end.clone()
+    pub fn end(&self) -> Vector2 {
+        self.end
     }
 
     pub fn stroke_color(&self) -> Color {
@@ -85,7 +85,7 @@ impl Line2D {
 impl Draw for Line2D {
     /// ## Line2D::translate
     /// shifts the starting and ending points
-    fn translate(&mut self, offset: Point2D) -> &mut Self {
+    fn translate(&mut self, offset: Vector2) -> &mut Self {
         self.start += offset;
         self.end += offset;
         self
@@ -94,29 +94,18 @@ impl Draw for Line2D {
     /// ## Line2D::rotate
     /// rotates the line about its starting point
     fn rotate(&mut self, angle: f64) -> &mut Self {
+        self.end = self.start + self.end.rotate(angle);
         self.angle += angle;
-        self.end = self.start
-            + Point2D {
-                x: self.len() * self.angle.cos(),
-                y: self.len() * self.angle.sin(),
-            };
         self
     }
 
     /// ## Line2D::scale
     /// scales the length of the line by moving the end point, c != 0
     fn scale(&mut self, c: f64) -> &mut Self {
-        // make sure we actually have a valid value
-        let c = if c == 0.0 { 1.0 } else { c };
-
-        self.end = self.start
-            + Point2D {
-                x: c * self.end.x,
-                y: c * self.end.y,
-            };
-        self.len =
-            ((self.start.x - self.end.x).powi(2) + (self.start.y - self.end.y).powi(2)).sqrt();
-
+        let diff = (self.end - self.start).scale(c);
+        self.end = self.start + diff;
+        self.len = diff.arg();
+        
         self
     }
 
@@ -164,24 +153,24 @@ mod tests {
     #[test]
     fn test_translate() {
         let mut line = Line2D::new(
-            &Point2D::new(0.0, 0.0),
-            &Point2D::new(1.0, 1.0),
+            Vector2::new(0.0, 0.0),
+            Vector2::new(1.0, 1.0),
             None,
             None,
             None,
         );
 
-        line.translate(Point2D::new(5.0, 5.0));
+        line.translate(Vector2::new(5.0, 5.0));
 
-        assert_eq!(Point2D::new(5.0, 5.0), line.start());
-        assert_eq!(Point2D::new(6.0, 6.0), line.end());
+        assert_eq!(Vector2::new(5.0, 5.0), line.start());
+        assert_eq!(Vector2::new(6.0, 6.0), line.end());
     }
 
     #[test]
     fn test_rotate() {
         let mut line = Line2D::new(
-            &Point2D::new(0.0, 0.0),
-            &Point2D::new(1.0, 1.0),
+            Vector2::new(0.0, 0.0),
+            Vector2::new(1.0, 1.0),
             None,
             None,
             None,
@@ -190,15 +179,15 @@ mod tests {
         line.rotate(FRAC_PI_4);
 
         assert_eq!(FRAC_PI_2, line.angle());
-        assert_eq!(Point2D::new(0.0, 0.0), line.start());
-        assert_eq!(Point2D::new(0.0, 2f64.sqrt()), line.end());
+        assert_eq!(Vector2::new(0.0, 0.0), line.start());
+        assert_eq!(Vector2::new(0.0, 2f64.sqrt()), line.end());
     }
 
     #[test]
     fn test_scale() {
         let mut line = Line2D::new(
-            &Point2D::new(0.0, 0.0),
-            &Point2D::new(1.0, 1.0),
+            Vector2::new(0.0, 0.0),
+            Vector2::new(1.0, 1.0),
             None,
             None,
             None,
@@ -207,7 +196,7 @@ mod tests {
         line.scale(3.0);
 
         assert_eq!(18f64.sqrt(), line.len());
-        assert_eq!(Point2D::new(0.0, 0.0), line.start());
-        assert_eq!(Point2D::new(3.0, 3.0), line.end());
+        assert_eq!(Vector2::new(0.0, 0.0), line.start());
+        assert_eq!(Vector2::new(3.0, 3.0), line.end());
     }
 }
