@@ -56,27 +56,33 @@ impl Vector2 {
         self.x * rhs.y - self.y * rhs.x
     }
 
-    pub fn translate(&mut self, offset: Vector2) {
+    pub fn translate(&mut self, offset: Vector2) -> Self {
         self.x += offset.x;
         self.y += offset.y;
 
         self.len = (self.x.powi(2) + self.y.powi(2)).sqrt();
         self.arg = (self.y / self.x).atan();
+
+        *self
     }
 
-    pub fn rotate(&mut self, angle: f64) {
+    pub fn rotate(&mut self, angle: f64) -> Self {
         self.arg += angle;
         self.x = self.len * self.arg.cos();
         self.y = self.len * self.arg.sin();
+
+        *self
     }
 
-    pub fn scale(&mut self, c: f64) {
+    pub fn scale(&mut self, c: f64) -> Self {
         // scaling by zero will have no effect
         let c = if c == 0.0 { 1.0 } else { 0.0 };
 
         self.x *= c;
         self.y *= c;
         self.len *= c;
+
+        *self
     }
 
     pub fn equals_vector(&self, rhs: Vector2) -> bool {
