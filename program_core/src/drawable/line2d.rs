@@ -113,11 +113,16 @@ impl Draw for Line2D {
     /// checks whether the given point is on the line or not
     fn contains(&self, other: Vector2) -> bool {
         use core::f64::EPSILON;
+        use std::cmp::max;
 
         let diff1 = other - self.start;
         let diff2 = self.end - other;
+        // TODO: find a better way
+        let maxlen = if diff1.len() >= diff2.len() { diff1.len() } else { diff2.len() };
+        
+        println!("checking for {:?}\ncross product is {}", other, diff1.cross(diff2));
 
-        diff1.dot(diff2) <= EPSILON
+        diff1.cross(diff2).abs() <= EPSILON && maxlen <= self.len() 
     }
 
     /// ## Line2D::get_svg_tag_name
@@ -222,10 +227,14 @@ mod tests {
             None,
         );
 
-        let v_inside = Vector2::new(1.0, 1.0);
-        let v_outside = Vector2::new(5.0, 5.0);
-
-        assert!(line.contains(v_inside));
-        assert!(!line.contains(v_outside));
+        let v_inside1 = Vector2::new(1.0, 1.0);
+        let v_inside2 = Vector2::new(2.0, 2.0);
+        let v_outside1 = Vector2::new(5.0, 5.0);
+        let v_outside2 = Vector2::new(17.0, 20.0);
+        
+        assert!(line.contains(v_inside1));
+        assert!(line.contains(v_inside1));
+        assert!(!line.contains(v_outside2));
+        assert!(!line.contains(v_outside2));
     }
 }
