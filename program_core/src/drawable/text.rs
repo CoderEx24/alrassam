@@ -1,4 +1,4 @@
-use super::point2d::Point2D;
+use super::vector::Vector2;
 use super::{Color, Draw, BLACK};
 use std::collections::HashMap;
 
@@ -9,13 +9,13 @@ use std::collections::HashMap;
 ///
 pub struct Text {
     text: String,
-    pos: Point2D,
+    pos: Vector2,
     angle: f64,
     fill: Color,
 }
 
 impl Text {
-    pub fn new(text: String, pos: Point2D, angle: Option<f64>, fill: Option<Color>) -> Text {
+    pub fn new(text: String, pos: Vector2, angle: Option<f64>, fill: Option<Color>) -> Text {
         Text {
             text,
             pos,
@@ -28,8 +28,8 @@ impl Text {
         &self.text
     }
 
-    pub fn pos(&self) -> Point2D {
-        self.pos.clone()
+    pub fn pos(&self) -> Vector2 {
+        self.pos
     }
 
     pub fn angle(&self) -> f64 {
@@ -44,7 +44,7 @@ impl Text {
 impl Draw for Text {
     /// ## Text::translate
     /// shifts the text
-    fn translate(&mut self, offset: Point2D) -> &mut Self {
+    fn translate(&mut self, offset: Vector2) -> &mut Self {
         self.pos += offset;
         self
     }
@@ -96,10 +96,10 @@ mod tests {
 
     #[test]
     fn test_translate() {
-        let mut text = Text::new("test".to_string(), Point2D::new(0.0, 0.0), None, None);
+        let mut text = Text::new("test".to_string(), Vector2::new(0.0, 0.0), None, None);
 
-        text.translate(Point2D::new(1.0, 1.0));
+        text.translate(Vector2::new(1.0, 1.0));
 
-        assert_eq!(Point2D::new(1.0, 1.0), text.pos());
+        assert_eq!(Vector2::new(1.0, 1.0), text.pos());
     }
 }
