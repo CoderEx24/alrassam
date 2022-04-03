@@ -1,4 +1,4 @@
-use super::point2d::Point2D;
+use super::vector::Vector2;
 use super::Draw;
 use std::collections::HashMap;
 use std::f64::consts::PI;
@@ -9,13 +9,13 @@ use std::f64::consts::PI;
 ///
 /// # Examples
 /// ```
-/// use program_core::{Point, Circle};
+/// use program_core::{Vector2, Circle};
 /// use std::f64::consts::PI;
 ///
-/// let center = Point::new(1.0, 1.0);
-/// let radius = 5f64;
+/// let center = Vector2::new(1.0, 1.0);
+/// let radius = 5.0;
 ///
-/// let circle = Circle::new(&center, radius);
+/// let circle = Circle::new(center, radius);
 ///
 /// assert_eq!(5f64, circle.radius());
 /// assert_eq!(center, circle.center());
@@ -24,24 +24,24 @@ use std::f64::consts::PI;
 ///
 /// ```
 pub struct Circle {
-    center: Point2D,
+    center: Vector2,
     radius: f64,
     circumference: f64,
     area: f64,
 }
 
 impl Circle {
-    pub fn new(center: &Point2D, radius: f64) -> Circle {
+    pub fn new(center: Vector2, radius: f64) -> Circle {
         Circle {
-            center: center.clone(),
+            center,
             radius,
             circumference: 2f64 * PI * radius,
             area: PI * radius.powi(2),
         }
     }
 
-    pub fn center(&self) -> Point2D {
-        self.center.clone()
+    pub fn center(&self) -> Vector2 {
+        self.center
     }
 
     pub fn radius(&self) -> f64 {
@@ -60,7 +60,7 @@ impl Circle {
 impl Draw for Circle {
     /// ## Circle::translate
     /// shifts the center of the circle
-    fn translate(&mut self, offset: Point2D) -> &mut Self {
+    fn translate(&mut self, offset: Vector2) -> &mut Self {
         self.center += offset;
         self
     }
@@ -82,8 +82,8 @@ impl Draw for Circle {
     
     /// ## Circle::contains
     /// checks whether the provided point is in the circle or not
-    fn contains(&self, point: Point2D) -> bool {
-        (self.center.x - point.x).powi(2) + (self.center.y - point.y).powi(2) <= self.radius.powi(2)
+    fn contains(&self, point: Vector2) -> bool {
+        (point - self.center).len() <= self.radius
     }
 
     /// ## Circle::get_svg_tag_name
@@ -119,31 +119,31 @@ mod tests {
 
     #[test]
     fn test_translate() {
-        let mut circle = Circle::new(&Point2D::new(0.0, 0.0), 5.0);
+        let mut circle = Circle::new(Vector2::new(0.0, 0.0), 5.0);
 
-        circle.translate(Point2D::new(1.0, 1.0));
+        circle.translate(Vector2::new(1.0, 1.0));
 
-        assert_eq!(Point2D::new(1.0, 1.0), circle.center());
+        assert_eq!(Vector2::new(1.0, 1.0), circle.center());
         assert_eq!(5.0, circle.radius());
     }
 
     #[test]
     fn test_scale() {
-        let mut circle = Circle::new(&Point2D::new(0.0, 0.0), 5.0);
+        let mut circle = Circle::new(Vector2::new(0.0, 0.0), 5.0);
 
         circle.scale(2.0);
 
-        assert_eq!(Point2D::new(0.0, 0.0), circle.center());
+        assert_eq!(Vector2::new(0.0, 0.0), circle.center());
         assert_eq!(10.0, circle.radius());
     }
 
     #[test]
     fn test_contains() {
-        let circle = Circle::new(&Point2D::new(0.0, 0.0), 1.0);
+        let circle = Circle::new(Vector2::new(0.0, 0.0), 1.0);
 
-        let point_in = Point2D::new(0.1, 0.1);
-        let point_on = Point2D::new(0.0, 1.0);
-        let point_out = Point2D::new(1.0, 1.0);
+        let point_in = Vector2::new(0.1, 0.1);
+        let point_on = Vector2::new(0.0, 1.0);
+        let point_out = Vector2::new(1.0, 1.0);
 
         assert!(circle.contains(point_in));
         assert!(circle.contains(point_on));
