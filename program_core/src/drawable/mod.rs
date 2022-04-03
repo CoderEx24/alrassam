@@ -89,4 +89,4 @@ pub mod circle;
 pub mod line2d;
 pub mod vector;
 pub mod text;
-//pub mod rect2d;
+pub mod rect2d;
