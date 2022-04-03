@@ -49,7 +49,7 @@ impl Vector2 {
     }
 
     pub fn dot(&self, rhs: Vector2) -> f64 {
-        self.x * rhs.x + self.y + rhs.y
+        self.x * rhs.x + self.y * rhs.y
     }
 
     pub fn cross(&self, rhs: Vector2) -> f64 {
@@ -76,7 +76,7 @@ impl Vector2 {
 
     pub fn scale(&mut self, c: f64) -> Self {
         // scaling by zero will have no effect
-        let c = if c == 0.0 { 1.0 } else { 0.0 };
+        let c = if c == 0.0 { 1.0 } else { c };
 
         self.x *= c;
         self.y *= c;
@@ -104,7 +104,7 @@ impl Add for Vector2 {
 
 impl AddAssign for Vector2 {
     fn add_assign(&mut self, rhs: Self) {
-        *self = Vector2::new(self.x + rhs.x, self.y * rhs.y);
+        *self = Vector2::new(self.x + rhs.x, self.y + rhs.y);
     }
 }
 
@@ -153,7 +153,7 @@ mod tests {
         let v1 = Vector2::new(1.0, 1.0);
         let v2 = Vector2::new(2.0, 2.0);
 
-        assert_eq!(2.0, v1.dot(v2));
+        assert_eq!(4.0, v1.dot(v2));
         assert_eq!(v1.dot(v2), v2.dot(v1));
 
         let v1 = Vector2::new(0.0, 1.0);
@@ -167,7 +167,7 @@ mod tests {
         let v1 = Vector2::new(0.0, 1.0);
         let v2 = Vector2::new(1.0, 0.0);
 
-        assert_eq!(1.0, v1.cross(v2));
+        assert_eq!(-1.0, v1.cross(v2));
         assert_eq!(v1.cross(v2), -v2.cross(v1));
 
         let v2 = Vector2::new(0.0, 2.0);
@@ -177,19 +177,19 @@ mod tests {
 
     #[test]
     fn test_vector2_translate() {
-        let v1 = Vector2::new(0.0, 0.0);
+        let mut v1 = Vector2::new(0.0, 0.0);
         let offset = Vector2::new(1.0, 1.0);
     
         v1.translate(offset);
         
         assert_eq!(Vector2::new(1.0, 1.0), v1);
         assert_eq!(2f64.sqrt(), v1.len());
-        assert_eq!(0.0, v1.arg());
+        assert_eq!(FRAC_PI_4, v1.arg());
     }
 
     #[test]
     fn test_vector2_rotate() {
-        let v1 = Vector2::new(1.0, 1.0);
+        let mut v1 = Vector2::new(1.0, 1.0);
 
         v1.rotate(FRAC_PI_4);
 
@@ -200,7 +200,7 @@ mod tests {
 
     #[test]
     fn test_vector2_scale() {
-        let v1 = Vector2::new(1.0, 1.0);
+        let mut v1 = Vector2::new(1.0, 1.0);
 
         v1.scale(2.0);
 
