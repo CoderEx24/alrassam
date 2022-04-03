@@ -59,6 +59,7 @@ impl Draw for Text {
     /// ## Text::scale
     /// scales the text (currently has no effect)
     fn scale(&mut self, c: f64) -> &mut Self {
+        // TODO: Implement text scaling
         let c = if c == 0.0 { 1.0 } else { c };
 
         self

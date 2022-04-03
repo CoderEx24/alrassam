@@ -104,7 +104,7 @@ impl Draw for Line2D {
     fn scale(&mut self, c: f64) -> &mut Self {
         let diff = (self.end - self.start).scale(c);
         self.end = self.start + diff;
-        self.len = diff.arg();
+        self.len = diff.len();
         
         self
     }
@@ -194,8 +194,9 @@ mod tests {
         );
 
         line.scale(3.0);
-
-        assert_eq!(18f64.sqrt(), line.len());
+        
+        use core::f64::EPSILON;
+        assert!(18f64.sqrt() - line.len() <= EPSILON);
         assert_eq!(Vector2::new(0.0, 0.0), line.start());
         assert_eq!(Vector2::new(3.0, 3.0), line.end());
     }
