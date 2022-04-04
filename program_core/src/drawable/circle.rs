@@ -1,5 +1,4 @@
-use super::vector::Vector2;
-use super::Draw;
+use super::{ vector::Vector2, Draw, Color, BLACK, WHITE };
 use std::collections::HashMap;
 use std::f64::consts::PI;
 
@@ -15,7 +14,7 @@ use std::f64::consts::PI;
 /// let center = Vector2::new(1.0, 1.0);
 /// let radius = 5.0;
 ///
-/// let circle = Circle::new(center, radius);
+/// let circle = Circle::new(center, radius, None, None, None);
 ///
 /// assert_eq!(5f64, circle.radius());
 /// assert_eq!(center, circle.center());
@@ -27,15 +26,21 @@ use std::f64::consts::PI;
 pub struct Circle {
     center: Vector2,
     radius: f64,
+    stroke_color: Color,
+    stroke_width: u8,
+    fill: Color,
     circumference: f64,
     area: f64,
 }
 
 impl Circle {
-    pub fn new(center: Vector2, radius: f64) -> Circle {
+    pub fn new(center: Vector2, radius: f64, stroke_color: Option<Color>, stroke_width: Option<u8>, fill: Option<Color>) -> Circle {
         Circle {
             center,
             radius,
+            stroke_color: stroke_color.unwrap_or(BLACK),
+            stroke_width: stroke_width.unwrap_or(12),
+            fill: fill.unwrap_or(WHITE),
             circumference: 2f64 * PI * radius,
             area: PI * radius.powi(2),
         }
@@ -47,6 +52,18 @@ impl Circle {
 
     pub fn radius(&self) -> f64 {
         self.radius
+    }
+    
+    pub fn stroke_color(&self) -> Color {
+        self.stroke_color.clone()
+    }
+
+    pub fn stroke_width(&self) -> u8 {
+        self.stroke_width
+    }
+
+    pub fn fill(&self) -> Color {
+        self.fill.clone()
     }
 
     pub fn circumference(&self) -> f64 {
@@ -120,7 +137,7 @@ mod tests {
 
     #[test]
     fn test_translate() {
-        let mut circle = Circle::new(Vector2::new(0.0, 0.0), 5.0);
+        let mut circle = Circle::new(Vector2::new(0.0, 0.0), 5.0, None, None, None);
 
         circle.translate(Vector2::new(1.0, 1.0));
 
@@ -130,7 +147,7 @@ mod tests {
 
     #[test]
     fn test_scale() {
-        let mut circle = Circle::new(Vector2::new(0.0, 0.0), 5.0);
+        let mut circle = Circle::new(Vector2::new(0.0, 0.0), 5.0, None, None, None);
 
         circle.scale(2.0);
 
@@ -140,7 +157,7 @@ mod tests {
 
     #[test]
     fn test_contains() {
-        let circle = Circle::new(Vector2::new(0.0, 0.0), 1.0);
+        let circle = Circle::new(Vector2::new(0.0, 0.0), 1.0, None, None, None);
 
         let point_in = Vector2::new(0.1, 0.1);
         let point_on = Vector2::new(0.0, 1.0);
