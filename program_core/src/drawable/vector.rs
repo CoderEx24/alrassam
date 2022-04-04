@@ -112,6 +112,12 @@ impl Vector2 {
     }
 }
 
+impl ToString for Vector2 {
+    fn to_string(&self) -> String {
+        format!("({}, {})", self.x, self.y)
+    }
+}
+
 impl Add for Vector2 {
     type Output = Self;
 
