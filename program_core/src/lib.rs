@@ -6,6 +6,7 @@ pub enum Drawable {
 }
 
 pub use drawable::{
-    circle::Circle, color_from_hex, line2d::Line2D as Line, vector::Vector2, text::Text,
-    Color, BLACK, BLUE, GREEN, RED, WHITE,
+    circle::Circle, line2d::Line2D as Line, vector::Vector2, text::Text,
+    rect2d::Rect2, Color, BLACK, BLUE, GREEN, RED, WHITE, color_from_hex,
+    Draw
 };

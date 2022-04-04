@@ -13,7 +13,7 @@ use std::collections::HashMap;
 /// let start = Vector2::new(0.0, 0.0);
 /// let end = Vector2::new(1.0, 1.0);
 /// let line = Line::new(start, end, None, None, None);
-///
+/// 
 /// assert_eq!(start, line.start());
 /// assert_eq!(end, line.end());
 /// assert_eq!(BLUE, line.stroke_color());
@@ -21,7 +21,6 @@ use std::collections::HashMap;
 /// assert_eq!(WHITE, line.fill());
 /// assert_eq!(SQRT_2, line.len());
 /// assert_eq!(FRAC_PI_4, line.angle());
-///
 /// ```
 #[derive(PartialEq, Clone, Debug)]
 pub struct Line2D {
