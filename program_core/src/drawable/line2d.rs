@@ -22,7 +22,7 @@ use std::collections::HashMap;
 /// assert_eq!(SQRT_2, line.len());
 /// assert_eq!(FRAC_PI_4, line.angle());
 /// ```
-#[derive(PartialEq, Clone, Debug)]
+#[derive(Debug)]
 pub struct Line2D {
     start: Vector2,
     end: Vector2,

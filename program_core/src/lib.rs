@@ -1,8 +1,10 @@
 mod drawable;
 
-#[derive(PartialEq, Clone, Debug)]
+#[derive(Debug)]
 pub enum Drawable {
     Line(drawable::line2d::Line2D),
+    Circle(drawable::circle::Circle),
+    Rect2(drawable::rect2d::Rect2),
 }
 
 pub use drawable::{

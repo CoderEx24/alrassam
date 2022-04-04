@@ -23,6 +23,7 @@ use std::f64::consts::PI;
 /// assert_eq!(PI * 25f64, circle.area());
 ///
 /// ```
+#[derive(Debug)]
 pub struct Circle {
     center: Vector2,
     radius: f64,

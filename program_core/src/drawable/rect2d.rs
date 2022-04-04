@@ -28,6 +28,7 @@ use std::collections::HashMap;
 /// assert_eq!(Vector2::new(1.0, 1.0 + 2.0 * SQRT_2), rect.end(), "checking for end pos after transformation");
 /// assert_eq!(Vector2::new(2.0, 2.0), rect.dimensions());
 /// ```
+#[derive(Debug)]
 pub struct Rect2 {
     start: Vector2,
     diagonal: Vector2,
