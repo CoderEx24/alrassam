@@ -88,5 +88,6 @@ pub const WHITE: Color = Color(0, 0, 0, 1.0);
 pub mod circle;
 pub mod line2d;
 pub mod vector;
+pub mod canvas;
 pub mod text;
 pub mod rect2d;
