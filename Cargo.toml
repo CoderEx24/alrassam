@@ -2,6 +2,6 @@
 
 members = [
 	"program_core",
-#       "web",
+        "web",
 #	"gui",
 ]
