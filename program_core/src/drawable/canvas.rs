@@ -66,15 +66,15 @@ pub mod props {
 ///
 /// # Examples
 /// ```
-/// use program_core::{Canvas, Point, BLUE};
+/// use program_core::{Canvas, Vector2, BLUE};
 ///
-/// let canvas = Canvas::new(1920, 1080);
+/// let mut canvas = Canvas::new(1920, 1080);
 /// 
 /// // add a line, the arguments have the same order as Line2D::new
-/// canvas.add_line(Point::new(1.0, 1.0), Point::new(1.0, 10.0), BLUE, 1.0, None);
+/// canvas.add_line(Vector2::new(1.0, 1.0), Vector2::new(1.0, 10.0), Some(BLUE), Some(1), None);
 ///
 /// // export to SVG
-/// canvas.export("file.svg".to_string());
+/// canvas.export("file.svg");
 ///
 /// ```
 #[derive(Debug)]
