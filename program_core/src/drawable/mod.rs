@@ -25,7 +25,7 @@ pub trait Draw {
 
         // TODO: Use iterators instead
         for (key, val) in self.get_svg_tag_properties().iter() {
-            svg_tag += format!(" {}={}", key, val).as_str();
+            svg_tag += format!(" {}=\"{}\"", key, val).as_str();
         }
 
         // TODO: there must be a better way to do this >:(

@@ -71,7 +71,7 @@ pub mod props {
 /// let mut canvas = Canvas::new(1920, 1080);
 /// 
 /// // add a line, the arguments have the same order as Line2D::new
-/// canvas.add_line(Vector2::new(1.0, 1.0), Vector2::new(1.0, 10.0), Some(BLUE), Some(1), None);
+/// canvas.add_line(Vector2::new(1.0, 1.0), Vector2::new(100.0, 100.0), Some(BLUE), Some(10), None);
 ///
 /// // export to SVG
 /// canvas.export("file.svg");
@@ -236,7 +236,8 @@ impl Canvas {
     pub fn export(&self, file_path: &str) -> Result<(), Error> {
         use std::fs::write;
 
-        let mut contents = format!("<svg width={} height={}>", self.width, self.height).to_string();
+        let mut contents = format!("<svg width=\"{}\" height=\"{}\">", 
+                                   self.width, self.height).to_string();
         for drawable in &self.drawables {
             match drawable {
                 Drawable::Line(line) => {
