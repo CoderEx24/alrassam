@@ -170,5 +170,25 @@ impl Canvas {
             None => Err(()),
         }
     }
+
+    pub fn translate_selected_drawable(&mut self, offset: Vector2) -> bool {
+        if let Some(index) = self.selected_drawable {
+            let selected_drawable = &mut self.drawables[index];
+            match selected_drawable {
+                Drawable::Line(line) => {
+                    line.translate(offset);
+                },
+                Drawable::Circle(circle) => {
+                    circle.translate(offset);
+                },
+                Drawable::Rect2(rect) => {
+                    rect.translate(offset);
+                },
+                _ => { return false; }
+            }
+            return true
+        }
+        false
+    }
 }
 
