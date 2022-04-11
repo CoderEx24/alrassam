@@ -192,3 +192,89 @@ impl Canvas {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+    use core::f64::EPSILON;
+
+    #[test]
+    fn test_select_drawable_at() {
+        let mut canvas = Canvas::new(1920, 1080);
+        canvas.add_circle(Vector2::new(960.0, 540.0), 540.0, None, None, None);
+    
+        assert!(canvas.select_drawable_at(Vector2::new(1000.0, 600.0)), "Testing selection in a circle");
+
+        let circle_props = canvas.get_selected_drawable_properties();
+        
+        match circle_props {
+            Ok(props::Props::Circle(props)) => {
+                assert_eq!(Vector2::new(960.0, 540.0), props.center, "Testing circle props");
+                assert_eq!(540.0, props.radius, "Testing circle props"); 
+            },
+            _ => {
+                panic!("did not return the properties of the circle");
+            },
+        }
+
+        assert!(!canvas.select_drawable_at(Vector2::new(1900.0, 600.0)), "Testing selection in an empty space");
+    }
+
+    #[test]
+    fn test_translate_selected_drawable() {
+        let mut canvas = Canvas::new(1920, 1080);
+        canvas.add_circle(Vector2::new(960.0, 540.0), 540.0, None, None, None);
+
+        assert!(canvas.select_drawable_at(Vector2::new(1000.0, 600.0)), "Selecting the circle");
+        assert!(canvas.translate_selected_drawable(Vector2::new(1.0, 1.0)), "Translating the circle");
+    
+        match canvas.get_selected_drawable_properties() {
+            Ok(props::Props::Circle(props)) => {
+                assert_eq!(Vector2::new(961.0, 541.0), props.center, "Testing shifted center");
+            },
+
+            _ => {
+                panic!("did not return the properties of the circle");
+            },
+        }
+    }
+
+    #[test]
+    fn test_rotate_selected_drawable() {
+        let mut canvas = Canvas::new(1920, 1080);
+        canvas.add_rect(Vector2::new(200.0, 200.0), Vector2::new(300.0, 500.0), None, None, None);
+
+        assert!(canvas.select_drawable_at(Vector2::new(250.0, 350.0)), "Selecting the rectangle");
+        assert!(canvas.rotate_selected_drawable(90.0), "Rotating the rectangle");
+
+        match canvas.get_selected_drawable_properties() {
+            Ok(props::Props::Rect(props)) => {
+                assert_eq!(90.0, props.angle, "Testing rotated rectangle");
+            },
+
+            _ => {
+                panic!("did not return the properties of the circle");
+            }
+        }
+    }
+
+    #[test]
+    fn test_scale_selected_drawable() {
+        let mut canvas = Canvas::new(1920, 1080);
+        canvas.add_circle(Vector2::new(200.0, 200.0), 1.0, None, None, None);
+
+        assert!(canvas.select_drawable_at(Vector2::new(200.0, 200.0)), "Selecting the circle");
+        assert!(canvas.scale_selected_drawable(2.0), "Scaling the circle");
+
+        match canvas.get_selected_drawable_properties() {
+            Ok(props::Props::Circle(props)) => {
+                assert_eq!(2.0, props.radius, "Testing scaled circle");
+            },
+
+            _ => {
+                panic!("did not return circle properties");
+            }
+        }
+    }
+
+}
