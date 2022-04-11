@@ -2,6 +2,7 @@ use super::{
     vector::Vector2, circle::Circle, line2d::Line2D, rect2d::Rect2,
     Color, Draw, super::Drawable
 };
+use std::io::Error;
 
 /// # props
 /// a module that contains proxy structures.
@@ -229,6 +230,30 @@ impl Canvas {
             return true
         }
         false
+    }
+    
+    // TODO: test me, please :3
+    pub fn export(&self, file_path: &str) -> Result<(), Error> {
+        use std::fs::write;
+
+        let mut contents = format!("<svg width={} height={}>", self.width, self.height).to_string();
+        for drawable in &self.drawables {
+            match drawable {
+                Drawable::Line(line) => {
+                    contents += line.to_svg_tag().as_str();
+                },
+                Drawable::Circle(circle) => {
+                    contents += circle.to_svg_tag().as_str();
+                },
+                Drawable::Rect2(rect) => {
+                    contents += rect.to_svg_tag().as_str();
+                }
+                _ => {},
+            }
+        }
+        contents += "</svg>";
+
+        return write(file_path, contents);
     }
 }
 
