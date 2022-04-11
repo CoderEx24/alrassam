@@ -7,12 +7,9 @@ pub enum Drawable {
     Rect2(drawable::rect2d::Rect2),
 }
 
-pub use drawable::canvas::props::{
-    Props, CircleProps, RectProps, LineProps
-};
+pub use drawable::canvas::props::{CircleProps, LineProps, Props, RectProps};
 
 pub use drawable::{
-    circle::Circle, line2d::Line2D as Line, rect2d::Rect2,
-    Color, BLACK, BLUE, GREEN, RED, WHITE, color_from_hex,
-    canvas::Canvas, vector::Vector2, Draw 
+    canvas::Canvas, circle::Circle, color_from_hex, line2d::Line2D as Line, rect2d::Rect2,
+    vector::Vector2, Color, Draw, BLACK, BLUE, GREEN, RED, WHITE,
 };

@@ -85,9 +85,9 @@ pub const BLUE: Color = Color(0, 0, 255, 1.0);
 pub const BLACK: Color = Color(255, 255, 255, 1.0);
 pub const WHITE: Color = Color(0, 0, 0, 1.0);
 
+pub mod canvas;
 pub mod circle;
 pub mod line2d;
-pub mod vector;
-pub mod canvas;
-pub mod text;
 pub mod rect2d;
+pub mod text;
+pub mod vector;

@@ -1,4 +1,4 @@
-use super::{ vector::Vector2, Draw, Color, BLACK, WHITE };
+use super::{vector::Vector2, Color, Draw, BLACK, WHITE};
 use std::collections::HashMap;
 use std::f64::consts::PI;
 
@@ -34,7 +34,13 @@ pub struct Circle {
 }
 
 impl Circle {
-    pub fn new(center: Vector2, radius: f64, stroke_color: Option<Color>, stroke_width: Option<u8>, fill: Option<Color>) -> Circle {
+    pub fn new(
+        center: Vector2,
+        radius: f64,
+        stroke_color: Option<Color>,
+        stroke_width: Option<u8>,
+        fill: Option<Color>,
+    ) -> Circle {
         Circle {
             center,
             radius,
@@ -53,7 +59,7 @@ impl Circle {
     pub fn radius(&self) -> f64 {
         self.radius
     }
-    
+
     pub fn stroke_color(&self) -> Color {
         self.stroke_color.clone()
     }
@@ -97,7 +103,7 @@ impl Draw for Circle {
         self.radius *= if c == 0.0 { 1.0 } else { c };
         self
     }
-    
+
     /// ## Circle::contains
     /// checks whether the provided point is in the circle or not
     fn contains(&self, point: Vector2) -> bool {
@@ -166,6 +172,5 @@ mod tests {
         assert!(circle.contains(point_in));
         assert!(circle.contains(point_on));
         assert!(!circle.contains(point_out));
-
     }
 }

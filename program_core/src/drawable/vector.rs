@@ -1,10 +1,10 @@
-use core::ops::{Add, AddAssign, Sub, SubAssign};
 use core::f64::EPSILON;
+use core::ops::{Add, AddAssign, Sub, SubAssign};
 
 /// # Vector2
 /// structure to hold vectors in 2d cartesian space
 /// this structure can perform all operations done on vectors
-/// 
+///
 /// Vector2 instances can be added by + and +=, subtracted by - and -=.
 ///
 /// # Examples
@@ -29,9 +29,11 @@ pub struct Vector2 {
 
 impl Vector2 {
     pub fn new(x: f64, y: f64) -> Vector2 {
-        Vector2 { x, y,
+        Vector2 {
+            x,
+            y,
             len: (x.powi(2) + y.powi(2)).sqrt(),
-            arg: (y/x).atan(),
+            arg: (y / x).atan(),
         }
     }
 
@@ -49,7 +51,7 @@ impl Vector2 {
     pub fn arg(&self) -> f64 {
         self.arg
     }
-    
+
     /// ## Vector2::dot
     /// calculates the dot product between 2 vectors
     pub fn dot(&self, rhs: Vector2) -> f64 {
@@ -61,7 +63,7 @@ impl Vector2 {
     pub fn cross(&self, rhs: Vector2) -> f64 {
         self.x * rhs.y - self.y * rhs.x
     }
-    
+
     /// ## Vector2::translate
     /// shifts the vector by the given offset
     pub fn translate(&mut self, offset: Vector2) -> Self {
@@ -96,7 +98,7 @@ impl Vector2 {
 
         *self
     }
-    
+
     /// ## Vector2::equals_vector
     /// checks equality between another vector using differences
     /// use the == operator to use this
@@ -160,9 +162,9 @@ impl PartialEq<(f64, f64)> for Vector2 {
 
 #[cfg(test)]
 mod tests {
-    
+
     use super::*;
-    use core::f64::consts::{ FRAC_PI_4, FRAC_PI_2, };
+    use core::f64::consts::{FRAC_PI_2, FRAC_PI_4};
 
     #[test]
     fn test_vector2() {
@@ -203,9 +205,9 @@ mod tests {
     fn test_vector2_translate() {
         let mut v1 = Vector2::new(0.0, 0.0);
         let offset = Vector2::new(1.0, 1.0);
-    
+
         v1.translate(offset);
-        
+
         assert_eq!(Vector2::new(1.0, 1.0), v1);
         assert_eq!(2f64.sqrt(), v1.len());
         assert_eq!(FRAC_PI_4, v1.arg());

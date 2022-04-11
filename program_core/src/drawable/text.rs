@@ -57,12 +57,12 @@ impl Draw for Text {
     }
 
     /// ## Text::scale
-    /// unimplemented 
+    /// unimplemented
     // TODO: scaling text
     fn scale(&mut self, _: f64) -> &mut Self {
         self
     }
-        
+
     /// ## Text::contains
     /// unimplemented
     // TODO: check for inclusion

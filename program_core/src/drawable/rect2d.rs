@@ -1,4 +1,4 @@
-use super::{ vector::Vector2, Color, Draw, BLACK, WHITE };
+use super::{vector::Vector2, Color, Draw, BLACK, WHITE};
 use std::collections::HashMap;
 
 /// # rect2d::Rect2
@@ -39,7 +39,13 @@ pub struct Rect2 {
 }
 
 impl Rect2 {
-    pub fn new(start: Vector2, end: Vector2, stroke_color: Option<Color>, stroke_width: Option<u8>, fill: Option<Color>) -> Rect2 {
+    pub fn new(
+        start: Vector2,
+        end: Vector2,
+        stroke_color: Option<Color>,
+        stroke_width: Option<u8>,
+        fill: Option<Color>,
+    ) -> Rect2 {
         Rect2 {
             start,
             diagonal: end - start,
@@ -50,7 +56,13 @@ impl Rect2 {
         }
     }
 
-    pub fn new_square(start: Vector2, len: f64, stroke_color: Option<Color>, stroke_width: Option<u8>, fill: Option<Color>) -> Rect2 {
+    pub fn new_square(
+        start: Vector2,
+        len: f64,
+        stroke_color: Option<Color>,
+        stroke_width: Option<u8>,
+        fill: Option<Color>,
+    ) -> Rect2 {
         Rect2 {
             start,
             diagonal: Vector2::new(len, -len),
@@ -74,7 +86,10 @@ impl Rect2 {
     }
 
     pub fn dimensions(&self) -> (f64, f64) {
-        (self.diagonal.clone().rotate(-self.angle).x().abs() , self.diagonal.clone().rotate(-self.angle).y().abs())
+        (
+            self.diagonal.clone().rotate(-self.angle).x().abs(),
+            self.diagonal.clone().rotate(-self.angle).y().abs(),
+        )
     }
 
     pub fn stroke_color(&self) -> Color {
@@ -112,7 +127,7 @@ impl Draw for Rect2 {
         self.diagonal.scale(c);
         self
     }
-    
+
     /// ## Rect2::contains
     /// checks whether the given point is in the rectangle or not
     fn contains(&self, point: Vector2) -> bool {
@@ -126,18 +141,26 @@ impl Draw for Rect2 {
     fn get_svg_tag_name(&self) -> String {
         "rect".to_string()
     }
-    
+
     /// ## Rect2::get_svg_tag_properties
     /// returns a `HashMap<String, String>` with the properties of the rect tag
     fn get_svg_tag_properties(&self) -> HashMap<String, String> {
         let mut props = HashMap::new();
-        
+
         props.insert("x".to_string(), self.start.x().to_string());
         props.insert("y".to_string(), self.start.y().to_string());
         props.insert("width".to_string(), self.diagonal.x().to_string());
         props.insert("height".to_string(), self.diagonal.y().to_string());
-        props.insert("style".to_string(), format!("fill:{};stroke:{};stroke_width:{};", self.fill.to_string(), self.stroke_color.to_string(), self.stroke_width));
-        
+        props.insert(
+            "style".to_string(),
+            format!(
+                "fill:{};stroke:{};stroke_width:{};",
+                self.fill.to_string(),
+                self.stroke_color.to_string(),
+                self.stroke_width
+            ),
+        );
+
         props
     }
 
@@ -148,12 +171,18 @@ impl Draw for Rect2 {
 
 #[cfg(test)]
 mod tests {
-    
+
     use super::*;
 
     #[test]
     fn test_dimensions() {
-        let rect = Rect2::new(Vector2::new(0.0, 0.0), Vector2::new(1.0, 1.0), None, None, None);
+        let rect = Rect2::new(
+            Vector2::new(0.0, 0.0),
+            Vector2::new(1.0, 1.0),
+            None,
+            None,
+            None,
+        );
 
         assert_eq!(Vector2::new(1.0, 1.0), rect.dimensions());
     }
@@ -169,7 +198,13 @@ mod tests {
 
     #[test]
     fn test_translate() {
-        let mut rect = Rect2::new(Vector2::new(0.0, 0.0), Vector2::new(1.0, 1.0), None, None, None);
+        let mut rect = Rect2::new(
+            Vector2::new(0.0, 0.0),
+            Vector2::new(1.0, 1.0),
+            None,
+            None,
+            None,
+        );
 
         rect.translate(Vector2::new(2.0, 2.0));
 
@@ -179,9 +214,15 @@ mod tests {
 
     #[test]
     fn test_rotate() {
-        use core::f64::consts::{ FRAC_PI_4, FRAC_PI_2 };
+        use core::f64::consts::{FRAC_PI_2, FRAC_PI_4};
 
-        let mut rect = Rect2::new(Vector2::new(0.0, 0.0), Vector2::new(1.0, 1.0), None, None, None);
+        let mut rect = Rect2::new(
+            Vector2::new(0.0, 0.0),
+            Vector2::new(1.0, 1.0),
+            None,
+            None,
+            None,
+        );
 
         rect.rotate(FRAC_PI_4);
         assert_eq!(FRAC_PI_4, rect.angle());
@@ -191,7 +232,13 @@ mod tests {
 
     #[test]
     fn test_scale() {
-        let mut rect = Rect2::new(Vector2::new(0.0, 0.0), Vector2::new(1.0, 1.0), None, None, None);
+        let mut rect = Rect2::new(
+            Vector2::new(0.0, 0.0),
+            Vector2::new(1.0, 1.0),
+            None,
+            None,
+            None,
+        );
 
         rect.scale(2.0);
 
@@ -202,20 +249,35 @@ mod tests {
 
     #[test]
     fn test_contains() {
-        let rect = Rect2::new(Vector2::new(0.0, 0.0), Vector2::new(1.0, 1.0), None, None, None);
+        let rect = Rect2::new(
+            Vector2::new(0.0, 0.0),
+            Vector2::new(1.0, 1.0),
+            None,
+            None,
+            None,
+        );
 
-        let v_inside = [Vector2::new(0.5, 0.5), Vector2::new(0.75, 0.0), Vector2::new(1.0, 0.0), Vector2::new(1.0, 1.0)];
-        let v_outside = [Vector2::new(2.0, 2.0), Vector2::new(1.0, 1.1), Vector2::new(0.0, 5.0), Vector2::new(12.0, 16.4)];
+        let v_inside = [
+            Vector2::new(0.5, 0.5),
+            Vector2::new(0.75, 0.0),
+            Vector2::new(1.0, 0.0),
+            Vector2::new(1.0, 1.0),
+        ];
+        let v_outside = [
+            Vector2::new(2.0, 2.0),
+            Vector2::new(1.0, 1.1),
+            Vector2::new(0.0, 5.0),
+            Vector2::new(12.0, 16.4),
+        ];
 
         assert!(rect.contains(v_inside[0]));
         assert!(rect.contains(v_inside[1]));
         assert!(rect.contains(v_inside[2]));
         assert!(rect.contains(v_inside[3]));
-        
+
         assert!(!rect.contains(v_outside[0]));
         assert!(!rect.contains(v_outside[1]));
         assert!(!rect.contains(v_outside[2]));
         assert!(!rect.contains(v_outside[3]));
     }
-
 }

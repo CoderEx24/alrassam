@@ -13,7 +13,7 @@ use std::collections::HashMap;
 /// let start = Vector2::new(0.0, 0.0);
 /// let end = Vector2::new(1.0, 1.0);
 /// let line = Line::new(start, end, None, None, None);
-/// 
+///
 /// assert_eq!(start, line.start());
 /// assert_eq!(end, line.end());
 /// assert_eq!(BLUE, line.stroke_color());
@@ -104,7 +104,7 @@ impl Draw for Line2D {
         let diff = (self.end - self.start).scale(c);
         self.end = self.start + diff;
         self.len = diff.len();
-        
+
         self
     }
 
@@ -116,9 +116,13 @@ impl Draw for Line2D {
         let diff1 = other - self.start;
         let diff2 = self.end - other;
         // TODO: find a better way
-        let maxlen = if diff1.len() >= diff2.len() { diff1.len() } else { diff2.len() };
-        
-        diff1.cross(diff2).abs() <= EPSILON && maxlen <= self.len() 
+        let maxlen = if diff1.len() >= diff2.len() {
+            diff1.len()
+        } else {
+            diff2.len()
+        };
+
+        diff1.cross(diff2).abs() <= EPSILON && maxlen <= self.len()
     }
 
     /// ## Line2D::get_svg_tag_name
@@ -206,7 +210,7 @@ mod tests {
         );
 
         line.scale(3.0);
-        
+
         use core::f64::EPSILON;
         assert!(18f64.sqrt() - line.len() <= EPSILON);
         assert_eq!(Vector2::new(0.0, 0.0), line.start());
@@ -227,7 +231,7 @@ mod tests {
         let v_inside2 = Vector2::new(2.0, 2.0);
         let v_outside1 = Vector2::new(5.0, 5.0);
         let v_outside2 = Vector2::new(17.0, 20.0);
-        
+
         assert!(line.contains(v_inside1));
         assert!(line.contains(v_inside2));
         assert!(!line.contains(v_outside1));
