@@ -190,6 +190,46 @@ impl Canvas {
         }
         false
     }
+    
+    pub fn rotate_selected_drawable(&mut self, angle: f64) -> bool {
+        if let Some(index) = self.selected_drawable {
+            let selected_drawable = &mut self.drawables[index];
+            match selected_drawable {
+                Drawable::Line(line) => {
+                    line.rotate(angle);
+                },
+                Drawable::Circle(circle) => {
+                    circle.rotate(angle);
+                },
+                Drawable::Rect2(rect) => {
+                    rect.rotate(angle);
+                },
+                _ => { return false; }
+            }
+            return true
+        }
+        false
+    }
+
+    pub fn scale_selected_drawable(&mut self, c: f64) -> bool {
+        if let Some(index) = self.selected_drawable {
+            let selected_drawable = &mut self.drawables[index];
+            match selected_drawable {
+                Drawable::Line(line) => {
+                    line.scale(c);
+                },
+                Drawable::Circle(circle) => {
+                    circle.scale(c);
+                },
+                Drawable::Rect2(rect) => {
+                    rect.scale(c);
+                },
+                _ => { return false; }
+            }
+            return true
+        }
+        false
+    }
 }
 
 #[cfg(test)]
