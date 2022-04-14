@@ -6,6 +6,11 @@ struct LineProperties {
     pub line: LineProps,
 }
 
+#[derive(Properties, PartialEq)]
+struct PropertiesPanelProps {
+    pub props: Props,
+}
+
 #[function_component(LinePropertiesPanel)]
 fn line_properties_panel(LineProperties {
     line
@@ -35,5 +40,16 @@ fn line_properties_panel(LineProperties {
         </>
 
     }
+}
+
+#[function_component(PropertiesPanel)]
+fn properties_panel(PropertiesPanelProps {
+    props
+}: &PropertiesPanelProps) -> Html {
+    match props {
+        Props::Line(line) => html! { <LinePropertiesPanel line={line.clone()} /> },
+        _ => html! { <p>{"to be implemented :3"}</p> }
+    }
+
 }
 
