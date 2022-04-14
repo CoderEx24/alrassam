@@ -18,7 +18,7 @@ pub mod props {
 
     /// # LineProps
     /// a proxy structure for Line2D
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone)]
     pub struct LineProps {
         pub start: Vector2,
         pub end: Vector2,
@@ -31,7 +31,7 @@ pub mod props {
 
     /// # RectProps
     /// a proxy structure for Rect2
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone)]
     pub struct RectProps {
         pub start: Vector2,
         pub end: Vector2,
@@ -43,7 +43,7 @@ pub mod props {
 
     /// # CircleProps
     /// a proxy structure for Circle
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone)]
     pub struct CircleProps {
         pub center: Vector2,
         pub radius: f64,
@@ -52,7 +52,7 @@ pub mod props {
         pub fill: Color,
     }
     
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone)]
     pub enum Props {
         Line(LineProps),
         Rect(RectProps),
