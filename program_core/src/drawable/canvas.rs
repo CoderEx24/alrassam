@@ -145,6 +145,51 @@ impl Canvas {
             fill,
         )));
     }
+    
+    // TODO: test me, please :3
+    pub fn get_drawable_properties(&self) -> Vec<props::Props> {
+        let mut props_list = vec![];
+        
+        for drawable in &self.drawables {
+            match drawable {
+                Drawable::Line(line) => {
+                    props_list.push(props::Props::Line(props::LineProps {
+                        start: line.start().clone(),
+                        end: line.end().clone(),
+                        angle: line.angle(),
+                        len: line.len(),
+                        stroke_color: line.stroke_color().clone(),
+                        stroke_width: line.stroke_width(),
+                        fill: line.fill().clone(),
+                    }));
+                },
+                
+                Drawable::Circle(circle) => {
+                    props_list.push(props::Props::Circle(props::CircleProps {
+                        center: circle.center().clone(),
+                        radius: circle.radius().clone(),
+                        stroke_color: circle.stroke_color().clone(),
+                        stroke_width: circle.stroke_width(),
+                        fill: circle.fill().clone(),
+                    }));
+                },
+
+                Drawable::Rect2(rect) => {
+                    props_list.push(props::Props::Rect(props::RectProps {
+                        start: rect.start().clone(),
+                        end: rect.end().clone(),
+                        angle: rect.angle().clone(),
+                        stroke_color: rect.stroke_color().clone(),
+                        stroke_width: rect.stroke_width().clone(),
+                        fill: rect.fill().clone(),
+                    }));
+                }
+                _ => {}
+            }
+        }
+        
+        props_list.to_owned()
+    }
 
     pub fn select_drawable_at(&mut self, pos: Vector2) -> bool {
         // TODO: find a better way to do this
@@ -276,11 +321,8 @@ impl Canvas {
         }
         false
     }
-
-    // TODO: test me, please :3
-    pub fn export(&self, file_path: &str) -> Result<(), Error> {
-        use std::fs::write;
-
+    
+    pub fn to_svg(&self) -> String {
         let mut contents =
             format!("<svg width=\"{}\" height=\"{}\">", self.width, self.height).to_string();
         for drawable in &self.drawables {
@@ -299,7 +341,14 @@ impl Canvas {
         }
         contents += "</svg>";
 
-        return write(file_path, contents);
+        contents
+    }
+
+    // TODO: test me, please :3
+    pub fn export(&self, file_path: &str) -> Result<(), Error> {
+        use std::fs::write;
+
+        return write(file_path, self.to_svg());
     }
 }
 
