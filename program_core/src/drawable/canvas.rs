@@ -18,7 +18,7 @@ pub mod props {
 
     /// # LineProps
     /// a proxy structure for Line2D
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone)]
     pub struct LineProps {
         pub start: Vector2,
         pub end: Vector2,
@@ -31,7 +31,7 @@ pub mod props {
 
     /// # RectProps
     /// a proxy structure for Rect2
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone)]
     pub struct RectProps {
         pub start: Vector2,
         pub end: Vector2,
@@ -43,7 +43,7 @@ pub mod props {
 
     /// # CircleProps
     /// a proxy structure for Circle
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone)]
     pub struct CircleProps {
         pub center: Vector2,
         pub radius: f64,
@@ -52,7 +52,7 @@ pub mod props {
         pub fill: Color,
     }
     
-    #[derive(Debug, PartialEq)]
+    #[derive(Debug, PartialEq, Clone)]
     pub enum Props {
         Line(LineProps),
         Rect(RectProps),
@@ -276,11 +276,8 @@ impl Canvas {
         }
         false
     }
-
-    // TODO: test me, please :3
-    pub fn export(&self, file_path: &str) -> Result<(), Error> {
-        use std::fs::write;
-
+    
+    pub fn to_svg(&self) -> String {
         let mut contents =
             format!("<svg width=\"{}\" height=\"{}\">", self.width, self.height).to_string();
         for drawable in &self.drawables {
@@ -299,7 +296,14 @@ impl Canvas {
         }
         contents += "</svg>";
 
-        return write(file_path, contents);
+        contents
+    }
+
+    // TODO: test me, please :3
+    pub fn export(&self, file_path: &str) -> Result<(), Error> {
+        use std::fs::write;
+
+        return write(file_path, self.to_svg());
     }
 }
 
