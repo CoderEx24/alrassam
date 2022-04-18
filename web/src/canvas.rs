@@ -33,7 +33,9 @@ impl Component for CanvasComponent {
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         let line_onclick = ctx.link().callback(|_| CanvasMsg::DrawLine);
-        let canvas_onclick = ctx.link().callback(|evt: MouseEvent| CanvasMsg::Click(Vector2::new(evt.offset_x() as f64, evt.offset_y() as f64)));  
+        let canvas_onclick = ctx.link().callback(|evt: MouseEvent| { 
+            CanvasMsg::Click(Vector2::new(evt.offset_x() as f64, evt.offset_y() as f64))
+        });  
         
         html! {
             <>
@@ -68,6 +70,10 @@ impl Component for CanvasComponent {
         
         match self.current_drawable {
             Some(CanvasMsg::DrawLine) => {
+                if self.points.len() < 2 {
+                    return false;
+                }
+
                 let (start, end) = (self.points[0], self.points[1]);
                 self.canvas.add_line(start, end, None, None, None);
                 self.points.clear();
