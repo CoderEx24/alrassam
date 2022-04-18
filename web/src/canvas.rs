@@ -1,5 +1,6 @@
 use yew::prelude::*;
-use program_core::{ Vector2, Canvas, Color };
+use program_core::{ Vector2, Canvas, Color, Props };
+use crate::properties::PropertiesPanel;
 
 pub enum CanvasMsg {
     DrawLine,
@@ -13,6 +14,7 @@ pub struct CanvasComponent {
     canvas_element: NodeRef,
     current_drawable: Option<CanvasMsg>,
     points: Vec<Vector2>,
+    selected_drawable: Option<Props>,
 }
 
 impl Component for CanvasComponent {
@@ -21,10 +23,11 @@ impl Component for CanvasComponent {
 
     fn create(_: &Context<Self>) -> Self {
         let mut canvas = CanvasComponent {
-            canvas: Canvas::new(1200, 800),
+            canvas: Canvas::new(500, 500),
             canvas_element: NodeRef::default(),
             current_drawable: None,
             points: vec![],
+            selected_drawable: None,
         };
         
         canvas
@@ -33,7 +36,7 @@ impl Component for CanvasComponent {
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         let line_onclick = ctx.link().callback(|_| CanvasMsg::DrawLine);
-        let canvas_onclick = ctx.link().callback(|evt: MouseEvent| { 
+        let canvas_onclick = ctx.link().callback(|evt: MouseEvent| {
             CanvasMsg::Click(Vector2::new(evt.offset_x() as f64, evt.offset_y() as f64))
         });  
         
@@ -45,6 +48,13 @@ impl Component for CanvasComponent {
 
                 <div id={"canvas"}  onclick={canvas_onclick} ref={self.canvas_element.clone()}>
                 </div>
+                {
+                    if let Some(props) = &self.selected_drawable {
+                        html! { <PropertiesPanel props={props.clone()}/> }
+                    } else {
+                        html! {}
+                    }
+                }
             </>
         }
     }
@@ -64,7 +74,20 @@ impl Component for CanvasComponent {
                 println!("selected a drawable");
             },
             CanvasMsg::Click(point) => {
-                self.points.push(point);
+                log::info!("click recevied");
+                if self.canvas.select_drawable_at(point) {
+                    let props = self.canvas.get_selected_drawable_properties().expect("properties claiming failed!");
+                    self.selected_drawable = Some(props.clone());
+
+                    log::info!("drawable selected!");
+
+                    return true;
+                }
+                
+                if let Some(_) = self.current_drawable {
+                    log::info!("appended point to points stack");
+                    self.points.push(point);
+                }
             }
         }
         
@@ -77,6 +100,7 @@ impl Component for CanvasComponent {
                 let (start, end) = (self.points[0], self.points[1]);
                 self.canvas.add_line(start, end, None, None, None);
                 self.points.clear();
+                self.current_drawable = None;
                 return true;
             }
             _ => { return false; },
